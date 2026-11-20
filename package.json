@@ -1,8 +1,8 @@
 {
   "name": "keiko-foundations",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "Guided university mathematics and physics practice",
+  "description": "Kyodai-style guided mathematics textbooks",
   "scripts": {
     "start": "node scripts/server.mjs",
     "build": "python3 scripts/build.py",

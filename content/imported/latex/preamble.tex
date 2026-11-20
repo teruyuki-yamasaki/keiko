@@ -1,0 +1,17 @@
+% XeLaTeX 用プリアンブル（pandoc の header-includes として読み込む）
+% 日本語専用パッケージ（xeCJK / luatexja）なしで組めるよう、
+% 本文フォントに和欧両対応の Noto Serif CJK JP を使い、
+% 和文の行分割は XeTeX 組み込みのロケール改行に任せる。
+\XeTeXlinebreaklocale "ja"
+\XeTeXlinebreakskip=0pt plus 0.5pt
+\XeTeXlinebreakpenalty=0
+\usepackage{amsmath,amssymb}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0.4\baselineskip}
+\renewcommand{\arraystretch}{1.25}
+\usepackage{etoolbox}
+\AtBeginEnvironment{longtable}{\small}
+
+% Noto Serif CJK JP に無い記号（上付き・下付きの添字文字、ℝ・ℕ、⟨ ⟩ など）用の補助フォント。
+% 該当箇所は latex/fallback-glyphs.lua が {\fallbackfont ...} で包む。
+\newfontfamily\fallbackfont{DejaVu Serif}

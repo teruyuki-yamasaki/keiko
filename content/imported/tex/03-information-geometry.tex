@@ -1,0 +1,1275 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+  a4paper,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{Noto Serif CJK JP}
+  \setsansfont[]{Noto Sans CJK JP}
+  \setmonofont[]{Noto Sans Mono CJK JP}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=20mm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% XeLaTeX 用プリアンブル（pandoc の header-includes として読み込む）
+% 日本語専用パッケージ（xeCJK / luatexja）なしで組めるよう、
+% 本文フォントに和欧両対応の Noto Serif CJK JP を使い、
+% 和文の行分割は XeTeX 組み込みのロケール改行に任せる。
+\XeTeXlinebreaklocale "ja"
+\XeTeXlinebreakskip=0pt plus 0.5pt
+\XeTeXlinebreakpenalty=0
+\usepackage{amsmath,amssymb}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0.4\baselineskip}
+\renewcommand{\arraystretch}{1.25}
+\usepackage{etoolbox}
+\AtBeginEnvironment{longtable}{\small}
+
+% Noto Serif CJK JP に無い記号（上付き・下付きの添字文字、ℝ・ℕ、⟨ ⟩ など）用の補助フォント。
+% 該当箇所は latex/fallback-glyphs.lua が {\fallbackfont ...} で包む。
+\newfontfamily\fallbackfont{DejaVu Serif}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\hypertarget{ux60c5ux5831ux5e7eux4f55ux5b66-ux4eacux5927ux7269ux7406ux5f62ux5f0fux30c6ux30adux30b9ux30c8}{%
+\section{情報幾何学
+京大物理形式テキスト}\label{ux60c5ux5831ux5e7eux4f55ux5b66-ux4eacux5927ux7269ux7406ux5f62ux5f0fux30c6ux30adux30b9ux30c8}}
+
+作成日：2026-11-09
+
+\hypertarget{ux4f7fux3044ux65b9}{%
+\subsection{使い方}\label{ux4f7fux3044ux65b9}}
+
+情報幾何学の基礎を8テーマに分け、京大物理と同じ「誘導つきの長文＋空欄補充＋選択＋問」形式で1テーマ＝大問1題にまとめた。確率分布の集まりを「曲がった空間」とみなし、計量（フィッシャー情報）、距離に似た量（ダイバージェンス）、2種類の直線（e-測地線と
+m-測地線）を順に導入して、最尤推定や em
+アルゴリズムを幾何の言葉で理解するところまで進む。各大問は30〜40分が目安。
+
+\begin{itemize}
+\tightlist
+\item
+  【ア】などの空欄には式・数値・語句を入れる。前の空欄の答えを後で使うことがある。
+\item
+  \{ ケ \} などの選択欄には①〜③から1つ選ぶ。
+\item
+  「問」は導出・証明・計算。論理を短く書く。
+\item
+  記号は京大物理にならい、カタカナ（Ⅰ・Ⅳ・Ⅶ）、イロハ（Ⅱ・Ⅴ・Ⅷ）、ひらがな（Ⅲ・Ⅵ）を順に使う。
+\item
+  解答と解説は末尾に2つに分けてまとめた。
+\end{itemize}
+
+前提知識：確率変数・期待値・分散（測度論的確率論テキストの問題Ⅲ・Ⅳ程度）、リーマン計量・クリストッフェル記号・ガウス曲率（微分幾何学テキストの問題Ⅱ〜Ⅳ程度）、凸関数とルジャンドル変換の初歩。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+大問
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+テーマ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+到達目標
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Ⅰ & 統計モデルとフィッシャー情報計量 &
+スコア関数とフィッシャー情報を計算し、計量として扱える \\
+Ⅱ & KL・f-ダイバージェンス &
+ダイバージェンスの局所展開がフィッシャー計量になることを示せる \\
+Ⅲ & 指数型分布族と双対座標 & θ 座標・η 座標・ポテンシャル ψ, φ
+とルジャンドル変換 \\
+Ⅳ & α-接続と双対接続 & e-接続・m-接続、双対性、平坦性の判定 \\
+Ⅴ & 双対平坦空間と拡張ピタゴラスの定理 &
+ブレグマン・ダイバージェンスと直交分解 \\
+Ⅵ & 射影定理と統計的推論 & 最尤推定＝m-射影、最大エントロピー、em
+アルゴリズム \\
+Ⅶ & クラメール＝ラオの不等式 &
+推定精度の限界とフィッシャー情報の関係、有効推定量の条件 \\
+Ⅷ & 正規分布族の幾何 & 双曲平面としての構造、曲率・測地距離の計算 \\
+\end{longtable}
+
+共通の記号：統計モデル \{p(x; ξ)\} の対数尤度を l(x; ξ) = log p(x;
+ξ)、∂{\fallbackfont ᵢ} = ∂/∂ξ{\fallbackfont ⁱ} とし、期待値 E
+は特に断らない限り p(x; ξ)
+に関するものとする。微分と積分の順序交換は自由に行ってよい。
+
+\hypertarget{ux554fux984cux2170-ux7d71ux8a08ux30e2ux30c7ux30ebux3068ux30d5ux30a3ux30c3ux30b7ux30e3ux30fcux60c5ux5831ux8a08ux91cf}{%
+\subsection{問題Ⅰ　統計モデルとフィッシャー情報計量}\label{ux554fux984cux2170-ux7d71ux8a08ux30e2ux30c7ux30ebux3068ux30d5ux30a3ux30c3ux30b7ux30e3ux30fcux60c5ux5831ux8a08ux91cf}}
+
+次の文章を読んで、【　】に適した式・数値を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  n 個の実パラメータ ξ = (ξ¹, \ldots, ξ{\fallbackfont ⁿ})
+  で滑らかに指定される確率分布の族 S = \{p(x; ξ)\} を統計モデルという。ξ
+  を座標とみなせば、S は n 次元の多様体になる。各点 ξ
+  で、対数尤度の偏微分 ∂{\fallbackfont ᵢ}l をスコア関数という。∫ p(x; ξ)
+  dx = 1 の両辺を ξ{\fallbackfont ⁱ} で微分すると
+\end{enumerate}
+
+\[E[\partial_i l] = \int \partial_i p(x;\xi)\, dx = \text{【ア】}\]
+
+となり、スコアの平均は 0 である。そこで、スコアの共分散
+
+\[g_{ij}(\xi) = E[\partial_i l\; \partial_j l]\]
+
+をフィッシャー情報行列という。任意の実数 c{\fallbackfont ₁}, \ldots,
+c{\fallbackfont ₙ} に対し Σ
+c{\fallbackfont ᵢ}c{\fallbackfont ⱼ}g{\fallbackfont ᵢⱼ} = E{[}(Σ
+c{\fallbackfont ᵢ}∂{\fallbackfont ᵢ}l)²{]} ≥ 0 なので g
+は半正定値であり、スコアが一次独立なら正定値になる。こうして g は S
+上のリーマン計量（フィッシャー計量）を定める。
+
+また、∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}l =
+(∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}p)/p − ∂{\fallbackfont ᵢ}l
+∂{\fallbackfont ⱼ}l と E{[}(∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}p)/p{]}
+= 【イ】 から、g{\fallbackfont ᵢⱼ} =
+−E{[}∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}l{]}
+とも書ける（問1）。対数尤度の「山のとがり具合」の平均がフィッシャー情報である。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  具体例を計算しよう。
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  ベルヌーイ分布 p(x; θ) = θ{\fallbackfont ˣ}(1 −
+  θ)¹{\fallbackfont ⁻ˣ}（x = 0, 1、0 \textless{} θ \textless{} 1）では
+  ∂l = (x − θ)/(θ(1 − θ)) なので g(θ) = 【ウ】
+\item
+  分散 σ² が既知の正規分布 N(μ, σ²) では g(μ) = 【エ】
+\item
+  平均・標準偏差の両方を座標とする正規分布族 (μ, σ) では g = diag(1/σ²,
+  【オ】)
+\end{itemize}
+
+ベルヌーイの例では θ が 0 や 1 に近いほど g が大きい。θ = 0.01 と 0.02
+は、θ = 0.50 と 0.51 よりも、データから見分けやすいからである。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  座標を ξ から ζ に取り替えると、フィッシャー情報は
+\end{enumerate}
+
+\[\tilde g_{ab}(\zeta) = \sum_{i,j} \frac{\partial \xi^i}{\partial \zeta^a} \frac{\partial \xi^j}{\partial \zeta^b}\, g_{ij}(\xi)\]
+
+と、リーマン計量と同じ規則で変換される。ベルヌーイ分布で θ =
+sin²{\fallbackfont ϕ}（0 \textless{} {\fallbackfont ϕ} \textless{}
+π/2）とおくと {\fallbackfont g̃}({\fallbackfont ϕ}) = 【カ】
+と定数になる。したがってベルヌーイ族全体は長さ 【キ】
+の線分と等長である。
+
+より一般に、k + 1
+個の値をとる離散分布全体（確率単体）のフィッシャー計量は ds² = Σ
+(dp{\fallbackfont ᵢ})²/p{\fallbackfont ᵢ} = 4 Σ (d√p{\fallbackfont ᵢ})²
+と書けるので、y{\fallbackfont ᵢ} = √p{\fallbackfont ᵢ} と変換すれば Σ
+y{\fallbackfont ᵢ}² = 1
+を満たす単位球面の一部に4倍の計量を入れたもの、すなわち半径 【ク】
+の球面の一部と等長になる。
+
+フィッシャー計量は、十分統計量による変換（情報を失わないデータの要約）で不変である。この性質について、チェンツォフの定理によれば、十分統計量による変換で不変な確率単体上のリーマン計量は
+\{ ケ \}。
+
+\begin{itemize}
+\tightlist
+\item
+  ① 定数倍を除いてフィッシャー計量に限る
+\item
+  ② 無数に存在する
+\item
+  ③ 存在しない
+\end{itemize}
+
+問1　g{\fallbackfont ᵢⱼ} = −E{[}∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}l{]}
+を導け。
+
+問2　ポアソン分布 p(x; λ) = e\^{}(−λ) λ{\fallbackfont ˣ}/x!（x = 0, 1,
+2, \ldots）のフィッシャー情報 g(λ) を求めよ。また、λ = ν²
+と座標変換すると計量が定数になることを示せ。
+
+\hypertarget{ux554fux984cux2171-klux30c0ux30a4ux30d0ux30fcux30b8ux30a7ux30f3ux30b9ux3068-f-ux30c0ux30a4ux30d0ux30fcux30b8ux30a7ux30f3ux30b9}{%
+\subsection{問題Ⅱ　KLダイバージェンスと
+f-ダイバージェンス}\label{ux554fux984cux2171-klux30c0ux30a4ux30d0ux30fcux30b8ux30a7ux30f3ux30b9ux3068-f-ux30c0ux30a4ux30d0ux30fcux30b8ux30a7ux30f3ux30b9}}
+
+次の文章を読んで、【　】に適した式・数値を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  2つの確率分布 p, q
+  の「隔たり」を測る量として、カルバック＝ライブラー（KL）ダイバージェンス
+\end{enumerate}
+
+\[D(p \,\|\, q) = \int p(x) \log \frac{p(x)}{q(x)}\, dx\]
+
+が基本的である。不等式 log t ≤ t − 1（等号は t = 1）を t = q/p
+に使うと、−D(p‖q) = ∫ p log(q/p) dx ≤ ∫ p (q/p − 1) dx = 【イ】
+となり、D(p‖q) ≥ 0 が従う（ギブスの不等式）。等号は p = q
+のときに限る。ただし一般に D(p‖q) ≠ D(q‖p) であり、KL ダイバージェンスは
+\{ ロ \}。
+
+\begin{itemize}
+\tightlist
+\item
+  ① 非対称で、三角不等式も一般には満たさないので、距離ではない
+\item
+  ② 対称だが、三角不等式を満たさない
+\item
+  ③ 距離の公理をすべて満たす
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  距離ではないが、近い2点の間では KL
+  ダイバージェンスはフィッシャー計量と結びつく。統計モデル上の2点 ξ, ξ′
+  について f(ξ′) = D(p(·; ξ) ‖ p(·; ξ′)) とおくと f(ξ) = 0 である。ξ′
+  で微分すると ∂f/∂ξ′{\fallbackfont ⁱ} = −E{[}∂{\fallbackfont ᵢ}l(x;
+  ξ′){]}（期待値は p(x; ξ) に関する）なので、ξ′ = ξ では 【ハ】
+  となる。さらにもう1回微分して ξ′ = ξ とおくと
+  −E{[}∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}l{]} = 【ニ】 となるから
+\end{enumerate}
+
+\[D\big(p_\xi \,\|\, p_{\xi + d\xi}\big) = \frac{1}{2} \sum_{i,j} g_{ij}(\xi)\, d\xi^i d\xi^j + O(|d\xi|^3)\]
+
+を得る。KL
+ダイバージェンスは、局所的にはフィッシャー計量で測った距離の2乗の半分である。
+
+例として、分散が共通の正規分布では D(N(μ{\fallbackfont ₁}, σ²) ‖
+N(μ{\fallbackfont ₂}, σ²)) = 【ホ】 と正確に計算でき、問題Ⅰの g(μ) =
+1/σ² と整合する。ポアソン分布では D(Po(λ{\fallbackfont ₁}) ‖
+Po(λ{\fallbackfont ₂})) = 【ヘ】 であり、λ{\fallbackfont ₂} =
+λ{\fallbackfont ₁} + dλ と展開すると D ≈ (1/2)(【ト】)dλ² となる。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  凸関数 f（f(1) = 0）を用いて
+\end{enumerate}
+
+\[D_f(p \,\|\, q) = \int p(x)\, f\!\left(\frac{q(x)}{p(x)}\right) dx\]
+
+と定めたものを f-ダイバージェンスという。イェンセンの不等式から D\_f ≥ 0
+である。いくつかの例をあげる。
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+名前 & f(t) & f″(1) \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+KL ダイバージェンス D(p‖q) & 【チ】 & 【リ】 \\
+逆向き KL D(q‖p) & t log t & 1 \\
+ヘリンジャー距離の2乗 ∫(√p − √q)² dx & (√t − 1)² & 【ヌ】 \\
+全変動距離 & \textbar t − 1\textbar/2 & 定義されない（t = 1
+で微分不可能） \\
+\end{longtable}
+
+f が t = 1 で2回微分可能なら、(2) と同様の計算で、近い2点 ξ と ξ + dξ
+の間の f-ダイバージェンスは (f″(1)/2) Σ g{\fallbackfont ᵢⱼ}
+dξ{\fallbackfont ⁱ} dξ{\fallbackfont ʲ} で近似される。どの滑らかな
+f-ダイバージェンスも、局所的にはフィッシャー計量の定数倍に帰着するのである。
+
+f-ダイバージェンスは、データを統計量 T
+で変換すると増えない（データ処理不等式
+D\_f(p{\fallbackfont ∘}T{\fallbackfont ⁻}¹ ‖
+q{\fallbackfont ∘}T{\fallbackfont ⁻}¹) ≤ D\_f(p‖q)）。T
+が十分統計量なら等号が成り立つ。問題Ⅰで述べたフィッシャー計量の不変性は、この性質の局所版である。
+
+問1　ギブスの不等式 D(p‖q) ≥ 0 を、等号成立条件も含めて示せ。
+
+問2　D(N(μ{\fallbackfont ₁}, σ²) ‖ N(μ{\fallbackfont ₂}, σ²))
+を直接計算して【ホ】を確かめよ。
+
+\hypertarget{ux554fux984cux2172-ux6307ux6570ux578bux5206ux5e03ux65cfux3068ux53ccux5bfeux5ea7ux6a19}{%
+\subsection{問題Ⅲ　指数型分布族と双対座標}\label{ux554fux984cux2172-ux6307ux6570ux578bux5206ux5e03ux65cfux3068ux53ccux5bfeux5ea7ux6a19}}
+
+次の文章を読んで、【　】に適した式・数値・語句を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  統計量 F{\fallbackfont ₁}(x), \ldots, F{\fallbackfont ₙ}(x)
+  とパラメータ θ = (θ¹, \ldots, θ{\fallbackfont ⁿ}) を用いて
+\end{enumerate}
+
+\[p(x;\theta) = \exp\Big( \sum_{i=1}^{n} \theta^i F_i(x) - \psi(\theta) \Big), \qquad \psi(\theta) = \log \int \exp\Big( \sum_i \theta^i F_i(x) \Big) dx\]
+
+と書ける分布の族を指数型分布族、θ を自然パラメータ（θ
+座標）という（積分は基準となる測度に関するものとする）。ψ は確率の総和を
+1 にする正規化項で、対数分配関数あるいはキュムラント母関数と呼ばれる。
+
+ψ を微分すると ∂{\fallbackfont ᵢ}ψ =
+E{[}F{\fallbackfont ᵢ}{]}、∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}ψ =
+Cov(F{\fallbackfont ᵢ}, F{\fallbackfont ⱼ})
+となる（問1）。一方、対数尤度 l = Σ θ{\fallbackfont ⁱ}F{\fallbackfont ᵢ}
+− ψ(θ) の2階微分は ∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}l =
+−∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}ψ で x によらないので、問題Ⅰより
+Cov(F{\fallbackfont ᵢ}, F{\fallbackfont ⱼ}) = 【あ】
+が成り立つ。共分散行列は半正定値なので、ψ は凸関数である。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  ベルヌーイ分布は p(x) = exp(θx − ψ(θ))、θ = log(p/(1 −
+  p))（ロジット）と書けて、ψ(θ) = 【い】 である。期待値は η = ψ′(θ) =
+  【う】 となり、これは成功確率 p そのものである。θ
+  座標でのフィッシャー情報は g(θ) = ψ″(θ) = 【え】 である。問題Ⅰで求めた
+  p 座標での値 1/(p(1 − p)) と見かけは異なるが、(dp/dθ)² = (p(1 − p))²
+  を掛ければ一致し、座標変換則と整合している。
+\end{enumerate}
+
+正規分布 N(μ, σ²) は F{\fallbackfont ₁} = x、F{\fallbackfont ₂} = x²
+として指数型分布族になり、θ¹ = μ/σ²、θ² = 【お】
+である。対応する期待値は η{\fallbackfont ₁} = E{[}x{]} =
+μ、η{\fallbackfont ₂} = E{[}x²{]} = 【か】 である。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  η{\fallbackfont ᵢ} = ∂{\fallbackfont ᵢ}ψ(θ) で定まる η =
+  (η{\fallbackfont ₁}, \ldots, η{\fallbackfont ₙ}) を期待値パラメータ（η
+  座標）という。ψ が狭義凸なら θ {\fallbackfont ↦} η は1対1なので、η
+  も座標になる。θ と η を結ぶのがルジャンドル変換である。
+\end{enumerate}
+
+\[\varphi(\eta) = \sup_{\theta} \big\{ \theta \cdot \eta - \psi(\theta) \big\}\]
+
+上限は ∇ψ(θ) = η を満たす θ で達成され、φ(η) = θ · η − ψ(θ) = E{[}l{]}
+となる。つまり φ(η) は分布の 【き】 に等しい。対応する点では ψ(θ) + φ(η)
+− θ · η = 【く】 が成り立ち、さらに θ{\fallbackfont ⁱ} =
+∂φ/∂η{\fallbackfont ᵢ} と、逆向きの関係も同じ形で成り立つ。ヤコビ行列
+∂η{\fallbackfont ᵢ}/∂θ{\fallbackfont ʲ} = g{\fallbackfont ᵢⱼ} と
+∂θ{\fallbackfont ⁱ}/∂η{\fallbackfont ⱼ} は互いに逆行列であり、η
+座標でのフィッシャー計量は ψ のヘッセ行列の逆行列、すなわち φ
+のヘッセ行列になる。ベルヌーイ分布では φ(η) = 【け】 である。
+
+こうして指数型分布族には、凸関数 ψ と φ に支えられた2つの座標 θ, η
+が備わる。この双対構造が以降の大問の主役である。最初の応用として、データ
+x{\fallbackfont ₁}, \ldots, x\_N から θ を最尤推定すると、推定値
+{\fallbackfont θ̂} は \{ こ \}。
+
+\begin{itemize}
+\tightlist
+\item
+  ① 統計量の標本平均と期待値パラメータが一致する条件
+  η({\fallbackfont θ̂}) = (1/N) Σ{\fallbackfont ₖ} F(x{\fallbackfont ₖ})
+  で決まる
+\item
+  ② 尤度方程式に解をもたないので数値的にしか求まらない
+\item
+  ③ 統計量の標本中央値で決まる
+\end{itemize}
+
+問1　∂{\fallbackfont ᵢ}ψ = E{[}F{\fallbackfont ᵢ}{]} と
+∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}ψ = Cov(F{\fallbackfont ᵢ},
+F{\fallbackfont ⱼ}) を示せ。
+
+問2　ポアソン分布を指数型分布族として表し、θ, ψ(θ), η, θ
+座標でのフィッシャー情報、φ(η) を求めよ。
+
+\hypertarget{ux554fux984cux2173-ux3b1-ux63a5ux7d9aux3068ux53ccux5bfeux63a5ux7d9a}{%
+\subsection{問題Ⅳ　α-接続と双対接続}\label{ux554fux984cux2173-ux3b1-ux63a5ux7d9aux3068ux53ccux5bfeux63a5ux7d9a}}
+
+次の文章を読んで、【　】に適した式・数値・語句を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  多様体上で「まっすぐ」を決めるのがアファイン接続 ∇
+  である。座標基底に対する係数 Γ{\fallbackfont ᵢⱼ},{\fallbackfont ₖ} =
+  {\fallbackfont ⟨}∇(∂{\fallbackfont ᵢ}) ∂{\fallbackfont ⱼ},
+  ∂{\fallbackfont ₖ⟩}（{\fallbackfont ⟨} , {\fallbackfont ⟩}
+  はフィッシャー計量）で接続を表す。微分幾何学で学んだレヴィ＝チヴィタ接続はその一つにすぎず、統計モデルには実数
+  α でパラメータ付けされた接続の族（α-接続）が自然に備わっている。
+\end{enumerate}
+
+\[\Gamma^{(\alpha)}_{ij,k} = E\Big[ \Big( \partial_i \partial_j l + \frac{1 - \alpha}{2}\, \partial_i l\, \partial_j l \Big) \partial_k l \Big], \qquad T_{ijk} = E[\partial_i l\, \partial_j l\, \partial_k l]\]
+
+α = 1 を e-接続（指数接続）、α = −1 を m-接続（混合接続）、α = 0
+をレヴィ＝チヴィタ接続という。3階対称テンソル T を用いると
+Γ\^{}(α){\fallbackfont ᵢⱼ},{\fallbackfont ₖ} =
+Γ\^{}(0){\fallbackfont ᵢⱼ},{\fallbackfont ₖ} − 【ア】
+T{\fallbackfont ᵢⱼₖ} と書け、α-接続はレヴィ＝チヴィタ接続を T
+の方向にずらしたものである。
+
+α-接続の間には次の関係がある。
+
+\[\partial_k g_{ij} = \Gamma^{(\alpha)}_{ki,j} + \Gamma^{(\text{【イ】})}_{kj,i}\]
+
+これは「ベクトル X を ∇ で、Y を ∇* で平行移動すると内積
+{\fallbackfont ⟨}X, Y{\fallbackfont ⟩}
+が保たれる」ことを意味し、この関係にある ∇ と ∇*
+を互いに双対な接続という。とくに e-接続と
+m-接続は双対である。自分自身と双対になるのは α = 【ウ】
+のときだけで、これは計量を保つレヴィ＝チヴィタ接続の性質そのものである。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  指数型分布族を θ 座標で表すと ∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}l =
+  −∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}ψ は x
+  によらないので、E{[}∂{\fallbackfont ₖ}l{]} = 0 から
+  Γ\^{}(e){\fallbackfont ᵢⱼ},{\fallbackfont ₖ} = 【エ】 となる。すなわち
+  θ 座標が e-接続の直線座標（アファイン座標）であり、指数型分布族は
+  e-平坦である。一方、分布 p{\fallbackfont ₀}, p{\fallbackfont ₁},
+  \ldots, p{\fallbackfont ₙ} の混合
+\end{enumerate}
+
+\[p(x;\eta) = \sum_{i=1}^{n} \eta_i\, p_i(x) + \Big(1 - \sum_{i=1}^{n} \eta_i\Big) p_0(x)\]
+
+からなる混合型分布族では ∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}p = 0
+であり、Γ\^{}(m){\fallbackfont ᵢⱼ},{\fallbackfont ₖ} = ∫
+∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}p ∂{\fallbackfont ₖ}l dx = 【オ】
+となるので m-平坦である。双対な接続の一方の曲率が 0 なら、他方の曲率も 0
+になることが知られており、指数型分布族は e-接続に関しても
+m-接続に関しても 【カ】 である。m-接続の直線座標は η 座標である。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  2つの分布 p, q を結ぶ測地線を書き下そう。
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  m-測地線：p(t) = 【キ】（0 ≤ t ≤ 1）。確率を足し合わせる「混合」の直線
+\item
+  e-測地線：log p(t) = (1 − t) log p + t log q −
+  c(t)。対数をとってから足し合わせる「幾何平均」の直線で、正規化定数は
+  c(t) = 【ク】
+\end{itemize}
+
+同じ2点を結んでいても、2本の測地線は一般に異なる曲線である。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  ベルヌーイ分布の θ 座標では、T は ψ の3階微分に等しく T =
+  ψ{\fallbackfont ‴}(θ) = 【ケ】 である。p = 1/2 では T = 0
+  となり、この点では α によらず接続が一致する。
+\end{enumerate}
+
+なお、指数型分布族は
+e-接続・m-接続に関して平坦だが、レヴィ＝チヴィタ接続に関しては \{ コ
+\}。
+
+\begin{itemize}
+\tightlist
+\item
+  ① 一般には平坦でない（問題Ⅷの正規分布族が例）
+\item
+  ② 常に平坦である
+\item
+  ③ 接続そのものが定義できない
+\end{itemize}
+
+問1　e-接続と m-接続について、∂{\fallbackfont ₖ}g{\fallbackfont ᵢⱼ} =
+Γ\^{}(e){\fallbackfont ₖᵢ},{\fallbackfont ⱼ} +
+Γ\^{}(m){\fallbackfont ₖⱼ},{\fallbackfont ᵢ} を直接計算で確かめよ。
+
+問2　N(μ{\fallbackfont ₁}, 1) と N(μ{\fallbackfont ₂}, 1) を結ぶ
+e-測地線上の分布が、すべて分散 1 の正規分布 N((1 − t)μ{\fallbackfont ₁}
++ tμ{\fallbackfont ₂}, 1) になることを示せ。
+
+\hypertarget{ux554fux984cux2174-ux53ccux5bfeux5e73ux5766ux7a7aux9593ux3068ux62e1ux5f35ux30d4ux30bfux30b4ux30e9ux30b9ux306eux5b9aux7406}{%
+\subsection{問題Ⅴ　双対平坦空間と拡張ピタゴラスの定理}\label{ux554fux984cux2174-ux53ccux5bfeux5e73ux5766ux7a7aux9593ux3068ux62e1ux5f35ux30d4ux30bfux30b4ux30e9ux30b9ux306eux5b9aux7406}}
+
+次の文章を読んで、【　】に適した式・語句を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  問題Ⅲ・Ⅳで見た構造を抽象化する。多様体 M 上に、互いに双対な接続 ∇, ∇*
+  がともに平坦で、∇ の直線座標 θ と ∇* の直線座標 η が、凸関数 ψ(θ),
+  φ(η) を用いて η = ∇ψ(θ)、θ = ∇φ(η)、ψ(θ) + φ(η) − θ · η = 0
+  で結ばれているとき、M
+  を双対平坦空間という。指数型分布族はその典型例である。
+\end{enumerate}
+
+2点 P, Q（座標をそれぞれ θ\_P, η\_P
+などと書く）に対し、正準ダイバージェンスを
+
+\[D[P:Q] = \psi(\theta_P) + \varphi(\eta_Q) - \theta_P \cdot \eta_Q\]
+
+で定める。指数型分布族でこれを計算すると、分布 q（点 Q）から分布 p（点
+P）への KL ダイバージェンスと一致し、D{[}P:Q{]} = 【イ】
+となる（引数の順序が逆になることに注意）。
+
+φ(η\_Q) = θ\_Q · η\_Q − ψ(θ\_Q) と η\_Q = ∇ψ(θ\_Q) を代入すると
+
+\[D[P:Q] = \psi(\theta_P) - \psi(\theta_Q) - \text{【ロ】}\]
+
+と書き直せる。これは「関数 ψ と、点 θ\_Q
+での接平面（1次近似）との高さの差」であり、ブレグマン・ダイバージェンスと呼ばれる。ψ
+の 【ハ】 から D{[}P:Q{]} ≥ 0 であり、等号は P = Q
+のときに限る（問2）。たとえば ψ(θ) = \textbar θ\textbar²/2（分散 1
+の正規分布の平均パラメータ）なら η = θ で、D{[}P:Q{]} = 【ニ】
+となり、通常のユークリッド距離の2乗の半分に一致する。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  3点 P, Q, R に対し、定義に代入して整理すると
+\end{enumerate}
+
+\[D[P:R] = D[P:Q] + D[Q:R] - \text{【ホ】}\]
+
+という「余弦定理」が成り立つ（問1）。最後の項は、Q から P へ向かう
+∇-測地線（θ 座標で直線）の方向 θ\_P − θ\_Q と、Q から R へ向かう
+∇*-測地線（η 座標で直線）の方向 η\_R − η\_Q
+の内積である。一般に、接ベクトル X を θ 座標の成分 X{\fallbackfont ⁱ}
+で、Y を η 座標の成分 Y{\fallbackfont ᵢ}
+で表すと、フィッシャー計量による内積は {\fallbackfont ⟨}X,
+Y{\fallbackfont ⟩} = 【ヘ】
+と、計量を介さず単純な和になる。双対座標の最大の利点である。
+
+したがって、Q において ∇-測地線 QP と ∇*-測地線 QR
+が直交すれば、D{[}P:R{]} = D{[}P:Q{]} + D{[}Q:R{]}
+が成り立つ。これを拡張ピタゴラスの定理という。KL
+ダイバージェンスの言葉に直すと、e-測地線 QP と m-測地線 QR が Q
+で直交するとき
+
+\[D(r \,\|\, p) = D(q \,\|\, p) + \text{【ト】}\]
+
+が成り立つ（p, q, r はそれぞれ点 P, Q, R
+の分布）。この定理は、次の問題Ⅵで「最も近い点への射影」を特徴づける基礎になる。
+
+なお、ダイバージェンスの引数を入れ替えた D{[}Q:P{]} は、一般に \{ チ
+\}。
+
+\begin{itemize}
+\tightlist
+\item
+  ① D{[}P:Q{]} と異なり、入れ替えると ∇ と ∇*（θ と η、ψ と
+  φ）の役割が入れ替わる
+\item
+  ② 常に D{[}P:Q{]} に等しい
+\item
+  ③ 負の値をとりうる
+\end{itemize}
+
+問1　正準ダイバージェンスの定義から、(2) の余弦定理を導け。
+
+問2　ψ が狭義凸のとき、ブレグマン・ダイバージェンスが非負で、0
+になるのは θ\_P = θ\_Q のときに限ることを示せ。
+
+\hypertarget{ux554fux984cux2175-ux5c04ux5f71ux5b9aux7406ux6700ux5c24ux63a8ux5b9aux6700ux5927ux30a8ux30f3ux30c8ux30edux30d4ux30fcem-ux30a2ux30ebux30b4ux30eaux30baux30e0}{%
+\subsection{問題Ⅵ　射影定理・最尤推定・最大エントロピー・em
+アルゴリズム}\label{ux554fux984cux2175-ux5c04ux5f71ux5b9aux7406ux6700ux5c24ux63a8ux5b9aux6700ux5927ux30a8ux30f3ux30c8ux30edux30d4ux30fcem-ux30a2ux30ebux30b4ux30eaux30baux30e0}}
+
+次の文章を読んで、【　】に適した式・語句を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。以下、標本空間は有限集合とする。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  データ x{\fallbackfont ₁}, \ldots, x\_N
+  が得られたとき、各値の出現割合を確率とする経験分布 {\fallbackfont p̂}
+  を考える。モデル M = \{p(x; θ)\} の分布との KL ダイバージェンスは
+\end{enumerate}
+
+\[D(\hat p \,\|\, p_\theta) = \sum_x \hat p(x) \log \hat p(x) - \text{【あ】}\]
+
+と書ける。第1項は θ によらないので、D({\fallbackfont p̂}‖p\_θ)
+を最小にする θ は最尤推定量に一致する。最尤推定は、データ点
+{\fallbackfont p̂} からモデル M への「最も近い点」探しである。
+
+M 上の点 q のうち D(p‖q) を最小にするものを求める操作を、p から M への
+【い】 という。問題Ⅴの拡張ピタゴラスの定理より、{\fallbackfont q̂}
+が最小点ならば、p から {\fallbackfont q̂} への m-測地線は
+{\fallbackfont q̂} で M と直交する（射影定理）。さらに M が 【う】
+であれば、そのような点はただ1つに定まる。逆向きの D(q‖p) を q
+について最小にする操作は e-射影と呼ばれ、射影先の集合が
+m-平坦なら一意である。
+
+M が指数型分布族なら、問題Ⅲで見たとおり最尤推定量は η({\fallbackfont θ̂})
+= (1/N) Σ{\fallbackfont ₖ} F(x{\fallbackfont ₖ})
+を満たす。たとえばベルヌーイ分布で N 回中 k
+回成功したとき、成功確率の推定値は 【え】 である。幾何的には、「F
+の期待値が標本平均に等しい分布」全体の集合 A は m-平坦で
+{\fallbackfont p̂} を含み、e-平坦な M と点 {\fallbackfont q̂}
+でちょうど直交して交わる。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  最大エントロピー原理。期待値 E{[}F{]} = c を満たす分布全体の集合 A
+  の中で、エントロピー H(p) = −Σ p log p
+  が最大のものを求めよう。標本空間の要素数を K、一様分布を u とすると
+  D(p‖u) = log K − H(p) なので、エントロピー最大化は u からの D(p‖u)
+  の最小化、すなわち u から A への
+  e-射影である。ラグランジュの未定乗数法で解くと、最大点は p*(x) =
+  【お】 の形の指数型分布族の一員になる。ここで θ は制約 E{[}F{]} = c
+  に対応する 【か】 である。
+\end{enumerate}
+
+拡張ピタゴラスの定理を使うと、A の任意の分布 p について D(p‖u) = D(p‖p*)
++ D(p*‖u) が成り立ち、H(p) ≤ H(p*)
+が直ちに従う。統計力学のカノニカル分布 e\^{}(−βE)/Z は、F
+をエネルギー、θ = −β とした特別な場合である。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  em アルゴリズム。観測できる変数 x と隠れ変数 z をもつモデル M = \{p(x,
+  z; θ)\}（e-平坦とする）を考える。(x, z) の同時分布のうち、x
+  の周辺分布が経験分布 {\fallbackfont p̂}(x)
+  に一致するもの全体をデータ多様体 D とよぶと、D は m-平坦である。点 p ∈
+  D と点 q ∈ M の間のダイバージェンス D(p‖q) を交互に最小化する。
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  e ステップ：q を固定して p ∈ D について最小化する。これは q から D
+  への 【き】 であり、解は p(x, z) = {\fallbackfont p̂}(x) q(z \textbar{}
+  x)（隠れ変数の条件付き分布で補完）となる
+\item
+  m ステップ：p を固定して q ∈ M について最小化する。これは p から M
+  への m-射影、すなわち補完した完全データに対する最尤推定である
+\end{itemize}
+
+各ステップで D(p‖q) は 【く】
+なので、アルゴリズムは必ず収束する方向に進むが、到達するのは一般に
+【け】 であり、大域的な最小点とは限らない。統計学で広く使われる EM
+アルゴリズムとの関係については、\{ こ \}。
+
+\begin{itemize}
+\tightlist
+\item
+  ① M が指数型分布族なら、em アルゴリズムと EM アルゴリズムは一致する
+\item
+  ② 2つは常に異なる推定値を与える
+\item
+  ③ EM アルゴリズムは乱数を使う確率的手法なので比較できない
+\end{itemize}
+
+問1　(1) の KL ダイバージェンスの式を導き、最尤推定が {\fallbackfont p̂}
+から M への射影であることを説明せよ。
+
+問2　サイコロの目 \{1, 2, \ldots, 6\} 上の分布で、平均が m
+に固定されたものの中でエントロピーを最大にする分布が p(k) ∝ e\^{}(θk)
+の形になることをラグランジュの未定乗数法で示せ。また m = 3.5 のときの θ
+を求めよ。
+
+\hypertarget{ux554fux984cux2176-ux30afux30e9ux30e1ux30fcux30ebux30e9ux30aaux306eux4e0dux7b49ux5f0fux3068ux63a8ux5b9aux306eux52b9ux7387}{%
+\subsection{問題Ⅶ　クラメール＝ラオの不等式と推定の効率}\label{ux554fux984cux2176-ux30afux30e9ux30e1ux30fcux30ebux30e9ux30aaux306eux4e0dux7b49ux5f0fux3068ux63a8ux5b9aux306eux52b9ux7387}}
+
+次の文章を読んで、【　】に適した式・語句を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  データ x からパラメータ ξ を推定する関数 T(x) を推定量という。すべての
+  ξ で E{[}T{]} = ξ
+  を満たすものを不偏推定量という。E{[}T{\fallbackfont ⁱ}{]} = ∫
+  T{\fallbackfont ⁱ}(x) p(x; ξ) dx = ξ{\fallbackfont ⁱ} の両辺を
+  ξ{\fallbackfont ʲ} で微分し、問題Ⅰの E{[}∂{\fallbackfont ⱼ}l{]} = 0
+  を使うと
+\end{enumerate}
+
+\[E\big[ (T^i - \xi^i)\, \partial_j l \big] = \text{【ア】}\]
+
+を得る。推定誤差とスコアは「ちょうど単位行列ぶん」相関している。パラメータが1つのとき、コーシー＝シュワルツの不等式
+(E{[}(T − ξ)∂l{]})² ≤ E{[}(T − ξ)²{]} E{[}(∂l)²{]} から
+
+\[V[T] \ge \text{【イ】}\]
+
+が従う（問1）。多次元では共分散行列について Cov(T) − g{\fallbackfont ⁻}¹
+が半正定値になる。これがクラメール＝ラオの不等式であり、フィッシャー情報が大きい（分布の変化を見分けやすい）ほど、推定の精度の限界も良くなる。
+
+独立同分布の N 個のデータでは、対数尤度が和になるのでフィッシャー情報は
+【ウ】 となり、不偏推定量の分散は 1/N に比例して小さくできる限界をもつ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  不等式の等号が成り立つ推定量を有効推定量という。コーシー＝シュワルツの等号条件から、有効であるためにはスコアが推定誤差に比例し、∂l
+  = g(ξ)(T − ξ) の形でなければならない。これを ξ
+  について積分すると、p(x; ξ) は T
+  を統計量とする指数型分布族であり、しかも ξ はその 【エ】
+  でなければならないことがわかる。つまり有効推定量が存在するのは、指数型分布族を期待値パラメータで表したときに限られ、そのとき有効推定量は統計量
+  F の 【オ】 である。
+\end{enumerate}
+
+たとえばベルヌーイ分布の N
+回の試行で成功割合を推定量とすると、その分散は p(1 − p)/N
+である。問題Ⅰより g = 1/(p(1 − p)) なので、クラメール＝ラオの不等式で
+【カ】 が成り立ち、成功割合は有効推定量である。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  一般のモデルでは有限の N で有効推定量は存在しないが、最尤推定量
+  {\fallbackfont ξ̂} は N → ∞ で
+\end{enumerate}
+
+\[\sqrt{N}\, (\hat\xi - \xi) \longrightarrow \mathcal{N}\big(0,\ \text{【キ】}\big)\]
+
+と分布収束し、漸近的に限界を達成する（漸近有効性）。さらに指数型分布族の中に曲がって埋め込まれたモデル（曲指数型分布族）では、推定誤差の
+1/N² の項が、モデルが周囲の空間の中でどれだけ曲がっているかを表す 【ク】
+で決まることが知られている。情報幾何学は、推定の精度を曲率という幾何学的な量で語ることを可能にした。
+
+クラメール＝ラオの不等式の幾何学的な意味として、フィッシャー計量で測った距離が大きい2つの分布ほど
+\{ ケ \}。
+
+\begin{itemize}
+\tightlist
+\item
+  ① データから識別しやすく、パラメータの推定精度も高い
+\item
+  ② データから識別しにくい
+\item
+  ③ 推定精度とは無関係である
+\end{itemize}
+
+問1　パラメータが1つの場合に、不等式 V{[}T{]} ≥ 【イ】
+を導け。等号成立条件も述べよ。
+
+問2　分散 σ² が既知の正規分布 N(μ, σ²) から N
+個の独立なデータを得たとき、標本平均の分散がクラメール＝ラオの限界に一致することを確かめよ。
+
+\hypertarget{ux554fux984cux2177-ux6b63ux898fux5206ux5e03ux65cfux306eux5e7eux4f55ux53ccux66f2ux5e73ux9762}{%
+\subsection{問題Ⅷ　正規分布族の幾何（双曲平面）}\label{ux554fux984cux2177-ux6b63ux898fux5206ux5e03ux65cfux306eux5e7eux4f55ux53ccux66f2ux5e73ux9762}}
+
+次の文章を読んで、【　】に適した式・数値・語句を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  1次元正規分布全体 \{N(μ, σ²) : μ ∈ {\fallbackfont ℝ}, σ \textgreater{}
+  0\} を (μ, σ)
+  を座標とする上半平面とみなす。問題Ⅰの結果から、フィッシャー計量は
+\end{enumerate}
+
+\[ds^2 = \frac{d\mu^2 + \text{【イ】}\, d\sigma^2}{\sigma^2}\]
+
+である。μ = √2 u と変数変換すると ds² = 2(du² + dσ²)/σ² となる。(du² +
+dσ²)/σ² はガウス曲率 −1
+の双曲平面（ポアンカレの上半平面モデル）の計量であり、計量を定数 c
+倍するとガウス曲率は 1/c 倍になるので、正規分布族のガウス曲率は K =
+【ロ】
+で一定である（問1）。正規分布の集まりは、負の定曲率をもつ双曲幾何の世界なのである。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  上半平面モデルの測地線は、境界 σ = 0
+  に垂直な半直線と、中心が境界上にある半円である。(μ, σ)
+  座標に戻すと、測地線は μ = 一定の半直線と、中心が μ 軸上にあり横方向に
+  √2 倍引き伸ばされた 【ハ】 になる。
+\end{enumerate}
+
+μ = 一定の半直線に沿った距離は ∫ √2 dσ/σ で計算でき、N(μ,
+σ{\fallbackfont ₁}²) と N(μ, σ{\fallbackfont ₂}²) の距離は 【ニ】
+である。距離が σ の比だけで決まり、σ が小さい領域ほど同じ σ
+の差でも遠く離れて見える。分散の小さい分布ほど、わずかな変化でも区別しやすいことの表れである。
+
+では平均だけが異なる N(0, σ²) と N(Δ, σ²)
+を結ぶ測地線はどうなるか。上の性質を踏まえると、この測地線は \{ ホ \}。
+
+\begin{itemize}
+\tightlist
+\item
+  ① 途中で σ が大きくなる方向にふくらんだ曲線になる
+\item
+  ② σ が一定の線分である
+\item
+  ③ 途中で σ が小さくなる方向にへこんだ曲線になる
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  2つの正規分布の KL ダイバージェンスは
+\end{enumerate}
+
+\[D\big(\mathcal{N}(\mu_1, \sigma_1^2) \,\|\, \mathcal{N}(\mu_2, \sigma_2^2)\big) = \text{【ヘ】}\]
+
+で与えられる（問2）。正規分布族は指数型分布族であり（問題Ⅲ）、θ 座標
+(μ/σ², −1/(2σ²)) と η 座標 (μ, μ² + σ²) をもつ。したがって
+e-接続・m-接続に関する曲率はともに 【ト】
+である。同じ空間が、レヴィ＝チヴィタ接続では曲がっており（K =
+【ロ】）、e-接続・m-接続ではまっすぐである。「平坦かどうか」は接続の選び方に依存するという、情報幾何学の要点がここに現れている。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  平均を固定した多変量正規分布 N(0, Σ)（Σ
+  は正定値対称行列）のフィッシャー計量は
+\end{enumerate}
+
+\[ds^2 = \text{【チ】}\; \mathrm{tr}\big( \Sigma^{-1} d\Sigma\, \Sigma^{-1} d\Sigma \big)\]
+
+で与えられる。1次元（Σ = σ²）では dΣ = 2σ dσ なので、(1) の σ 方向の成分
+2dσ²/σ² と一致する。この計量は Σ {\fallbackfont ↦}
+AΣA{\fallbackfont ᵀ}（A は正則行列）で不変であり、2点
+Σ{\fallbackfont ₁}, Σ{\fallbackfont ₂} の測地距離は、行列 【リ】
+の固有値 λ{\fallbackfont ₁}, \ldots, λ{\fallbackfont ₙ} を用いて d² =
+(1/2) Σ{\fallbackfont ᵢ} (log λ{\fallbackfont ᵢ})²
+と表される。共分散行列の比較、拡散テンソル画像の解析、脳波の信号処理などで実際に使われている距離である。
+
+問1　問題Ⅳの微分幾何学の公式（F = 0 のとき）
+
+\[K = -\frac{1}{2\sqrt{EG}} \left[ \frac{\partial}{\partial u}\left( \frac{G_u}{\sqrt{EG}} \right) + \frac{\partial}{\partial v}\left( \frac{E_v}{\sqrt{EG}} \right) \right]\]
+
+を u = μ、v = σ、E = 1/σ²、G = 2/σ² に適用して、K = 【ロ】 を確かめよ。
+
+問2　【ヘ】を導け。また μ{\fallbackfont ₂} = μ{\fallbackfont ₁} +
+dμ、σ{\fallbackfont ₂} = σ{\fallbackfont ₁} + dσ
+として2次まで展開し、問題Ⅱ(2) のとおり (1/2) ds²
+が得られることを確かめよ。
+
+\hypertarget{ux89e3ux7b54ux3068ux89e3ux8aacux554fux984cux2170ux2173}{%
+\subsection{解答と解説（問題Ⅰ〜Ⅳ）}\label{ux89e3ux7b54ux3068ux89e3ux8aacux554fux984cux2170ux2173}}
+
+空欄は表で、問は答案例で示す。答案例は要点を押さえた1つの書き方であり、これに限らない。
+
+\hypertarget{ux554fux984cux2170}{%
+\subsubsection{問題Ⅰ}\label{ux554fux984cux2170}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+空欄 & 解答 & ポイント \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ア & 0 & ∫p dx = 1 の微分 \\
+イ & 0 & ∫∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}p dx =
+∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}∫p dx \\
+ウ & 1/(θ(1 − θ)) & V{[}x{]} = θ(1 − θ) \\
+エ & 1/σ² & \\
+オ & 2/σ² & z = (x − μ)/σ とすると E{[}(z² − 1)²{]} = 2 \\
+カ & 4 & dθ/d{\fallbackfont ϕ} = 2 sin {\fallbackfont ϕ} cos
+{\fallbackfont ϕ} \\
+キ & π & ∫ 2 d{\fallbackfont ϕ}（0〜π/2） \\
+ク & 2 & 4 = 2² \\
+ケ & ① & \\
+\end{longtable}
+
+問1　∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}l =
+∂{\fallbackfont ᵢ}(∂{\fallbackfont ⱼ}p/p) =
+(∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}p)/p −
+(∂{\fallbackfont ᵢ}p)(∂{\fallbackfont ⱼ}p)/p² =
+(∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}p)/p − ∂{\fallbackfont ᵢ}l
+∂{\fallbackfont ⱼ}l。期待値をとると
+E{[}(∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}p)/p{]} =
+∫∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}p dx =
+∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}∫p dx = 0
+なので、−E{[}∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}l{]} =
+E{[}∂{\fallbackfont ᵢ}l ∂{\fallbackfont ⱼ}l{]} = g{\fallbackfont ᵢⱼ}。
+
+問2　l = −λ + x log λ − log x! より ∂l = x/λ − 1 = (x − λ)/λ。V{[}x{]} =
+λ なので g(λ) = λ/λ² = 1/λ。λ = ν² なら dλ/dν = 2ν
+で、{\fallbackfont g̃}(ν) = (2ν)² · (1/ν²) =
+4（定数）。ベルヌーイと同じく「平方根をとると平坦になる」。
+
+\hypertarget{ux554fux984cux2171}{%
+\subsubsection{問題Ⅱ}\label{ux554fux984cux2171}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+空欄 & 解答 & ポイント \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+イ & 0 & ∫q dx − ∫p dx \\
+ロ & ① & \\
+ハ & 0 & スコアの平均 \\
+ニ & g{\fallbackfont ᵢⱼ} & 問題Ⅰ問1 \\
+ホ & (μ{\fallbackfont ₁} − μ{\fallbackfont ₂})²/(2σ²) & 問2 \\
+ヘ & λ{\fallbackfont ₁} log(λ{\fallbackfont ₁}/λ{\fallbackfont ₂}) −
+λ{\fallbackfont ₁} + λ{\fallbackfont ₂} & E{[}x{]} =
+λ{\fallbackfont ₁} \\
+ト & 1/λ{\fallbackfont ₁} & 問題Ⅰ問2の g と一致 \\
+チ & −log t & p f(q/p) = p log(p/q) \\
+リ & 1 & f″(t) = 1/t² \\
+ヌ & 1/2 & f″(t) = (1/2) t\^{}(−3/2) \\
+\end{longtable}
+
+問1　log t ≤ t − 1（等号は t = 1 のみ）に t = q(x)/p(x) を代入して p(x)
+を掛け、p \textgreater{} 0 の範囲で積分すると −D(p‖q) ≤ ∫q dx − 1 ≤
+0。等号には、p \textgreater{} 0 のほとんどすべての x で q/p = 1
+であることが必要十分で、そのとき p = q。
+
+問2　log(p{\fallbackfont ₁}/p{\fallbackfont ₂}) = {[}(x −
+μ{\fallbackfont ₂})² − (x −
+μ{\fallbackfont ₁})²{]}/(2σ²)。p{\fallbackfont ₁} のもとで E{[}(x −
+μ{\fallbackfont ₁})²{]} = σ²、E{[}(x − μ{\fallbackfont ₂})²{]} = σ² +
+(μ{\fallbackfont ₁} − μ{\fallbackfont ₂})² なので、D =
+(μ{\fallbackfont ₁} − μ{\fallbackfont ₂})²/(2σ²)。これは
+(1/2)·(1/σ²)·(μ{\fallbackfont ₁} − μ{\fallbackfont ₂})²
+と書け、局所展開がここでは正確に成り立つ。
+
+\hypertarget{ux554fux984cux2172}{%
+\subsubsection{問題Ⅲ}\label{ux554fux984cux2172}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+空欄
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+解答
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ポイント
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+あ & g{\fallbackfont ᵢⱼ}（フィッシャー情報） & \\
+い & log(1 + e\^{}θ) & Σ（x = 0, 1）e\^{}(θx) \\
+う & e\^{}θ/(1 + e\^{}θ) & ロジットの逆関数 \\
+え & p(1 − p) & \\
+お & −1/(2σ²) & x² の係数 \\
+か & μ² + σ² & \\
+き & 負のエントロピー（エントロピーの符号を変えたもの） &
+基準測度に関するもの \\
+く & 0 & フェンシェルの等式 \\
+け & η log η + (1 − η) log(1 − η) & \\
+こ & ① & 尤度方程式 ∂{\fallbackfont ᵢ}ψ({\fallbackfont θ̂}) = 標本平均 \\
+\end{longtable}
+
+問1　e\^{}ψ = ∫exp(θ · F) dx を θ{\fallbackfont ⁱ} で微分すると
+∂{\fallbackfont ᵢ}ψ e\^{}ψ = ∫F{\fallbackfont ᵢ} exp(θ · F) dx、両辺を
+e\^{}ψ で割って ∂{\fallbackfont ᵢ}ψ = E{[}F{\fallbackfont ᵢ}{]}。さらに
+θ{\fallbackfont ʲ} で微分すると ∂{\fallbackfont ⱼ}∂{\fallbackfont ᵢ}ψ =
+∫F{\fallbackfont ᵢ} (F{\fallbackfont ⱼ} − ∂{\fallbackfont ⱼ}ψ) p dx =
+E{[}F{\fallbackfont ᵢ}F{\fallbackfont ⱼ}{]} −
+E{[}F{\fallbackfont ᵢ}{]}E{[}F{\fallbackfont ⱼ}{]} =
+Cov(F{\fallbackfont ᵢ}, F{\fallbackfont ⱼ})。
+
+問2　p(x; λ) = (1/x!) exp(x log λ − λ) なので、基準測度を 1/x! として θ
+= log λ、F(x) = x、ψ(θ) = e\^{}θ。η = ψ′(θ) = e\^{}θ = λ、θ
+座標でのフィッシャー情報 ψ″(θ) = e\^{}θ = λ（λ 座標の 1/λ に (dλ/dθ)² =
+λ² を掛けたものと一致）。φ(η) = θη − ψ = η log η − η。
+
+\hypertarget{ux554fux984cux2173}{%
+\subsubsection{問題Ⅳ}\label{ux554fux984cux2173}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+空欄 & 解答 & ポイント \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ア & α/2 & Γ\^{}(0) = E{[}∂{\fallbackfont ᵢ}∂{\fallbackfont ⱼ}l
+∂{\fallbackfont ₖ}l{]} + T/2 \\
+イ & −α & \\
+ウ & 0 & \\
+エ & 0 & \\
+オ & 0 & \\
+カ & 平坦（双対平坦） & \\
+キ & (1 − t)p + tq & \\
+ク & log ∫ p\^{}(1−t) q\^{}t dx & \\
+ケ & p(1 − p)(1 − 2p) & ψ″ = p(1 − p) を θ で微分、dp/dθ = p(1 − p) \\
+コ & ① & \\
+\end{longtable}
+
+問1　g{\fallbackfont ᵢⱼ} = ∫∂{\fallbackfont ᵢ}l ∂{\fallbackfont ⱼ}l p dx
+を ξ{\fallbackfont ᵏ} で微分すると、∂{\fallbackfont ₖ}p = p
+∂{\fallbackfont ₖ}l より
+
+\[\partial_k g_{ij} = E[\partial_k\partial_i l\, \partial_j l] + E[\partial_i l\, \partial_k\partial_j l] + E[\partial_i l\, \partial_j l\, \partial_k l]\]
+
+一方、Γ\^{}(e){\fallbackfont ₖᵢ},{\fallbackfont ⱼ} =
+E{[}∂{\fallbackfont ₖ}∂{\fallbackfont ᵢ}l
+∂{\fallbackfont ⱼ}l{]}、Γ\^{}(m){\fallbackfont ₖⱼ},{\fallbackfont ᵢ} =
+E{[}(∂{\fallbackfont ₖ}∂{\fallbackfont ⱼ}l + ∂{\fallbackfont ₖ}l
+∂{\fallbackfont ⱼ}l) ∂{\fallbackfont ᵢ}l{]}
+であり、両者の和は右辺の3項にちょうど一致する。
+
+問2　log p(x; μ) = −(x − μ)²/2 + 定数 なので、(1 − t) log
+p{\fallbackfont ₁} + t log p{\fallbackfont ₂} = −{[}(1 − t)(x −
+μ{\fallbackfont ₁})² + t(x − μ{\fallbackfont ₂})²{]}/2 + 定数 = −(x −
+m{\fallbackfont ₜ})²/2 + (x によらない項)、ただし m{\fallbackfont ₜ} =
+(1 − t)μ{\fallbackfont ₁} + tμ{\fallbackfont ₂}。正規化すると
+N(m{\fallbackfont ₜ}, 1)。指数型分布族は
+e-平坦なので、e-測地線は族の中にとどまり、θ 座標（ここでは
+μ）で直線になる。
+
+\hypertarget{ux89e3ux7b54ux3068ux89e3ux8aacux554fux984cux2174ux2177}{%
+\subsection{解答と解説（問題Ⅴ〜Ⅷ）}\label{ux89e3ux7b54ux3068ux89e3ux8aacux554fux984cux2174ux2177}}
+
+\hypertarget{ux554fux984cux2174}{%
+\subsubsection{問題Ⅴ}\label{ux554fux984cux2174}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+空欄 & 解答 & ポイント \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+イ & D(q‖p)（Q の分布から P の分布への KL） & 問題Ⅲの ψ, φ を代入 \\
+ロ & ∇ψ(θ\_Q) · (θ\_P − θ\_Q) & η\_Q = ∇ψ(θ\_Q) \\
+ハ & 凸性 & 凸関数は接平面より上にある \\
+ニ & \textbar θ\_P − θ\_Q\textbar²/2 & \\
+ホ & (θ\_P − θ\_Q) · (η\_R − η\_Q) & 問1 \\
+ヘ & Σ{\fallbackfont ᵢ} X{\fallbackfont ⁱ}Y{\fallbackfont ᵢ} &
+∂η{\fallbackfont ᵢ}/∂θ{\fallbackfont ʲ} = g{\fallbackfont ᵢⱼ} による \\
+ト & D(r‖q) & \\
+チ & ① & \\
+\end{longtable}
+
+イの確認：p, q を P, Q の分布とすると、D(q‖p) = E\_q{[}(θ\_Q − θ\_P) · F
+− ψ(θ\_Q) + ψ(θ\_P){]} = (θ\_Q − θ\_P) · η\_Q − ψ(θ\_Q) + ψ(θ\_P) =
+ψ(θ\_P) + φ(η\_Q) − θ\_P · η\_Q。
+
+問1　D{[}P:Q{]} + D{[}Q:R{]} − D{[}P:R{]} に定義を代入すると、ψ(θ\_P) と
+φ(η\_R) が消え、ψ(θ\_Q) + φ(η\_Q) = θ\_Q · η\_Q を用いて
+
+\[D[P:Q] + D[Q:R] - D[P:R] = \theta_Q\cdot\eta_Q - \theta_P\cdot\eta_Q - \theta_Q\cdot\eta_R + \theta_P\cdot\eta_R = (\theta_P - \theta_Q)\cdot(\eta_R - \eta_Q)\]
+
+問2　ψ が狭義凸なら ψ(θ\_P) ≥ ψ(θ\_Q) + ∇ψ(θ\_Q) · (θ\_P − θ\_Q)
+で、等号は θ\_P = θ\_Q のときに限る。左辺から右辺を引いたものが
+D{[}P:Q{]} である。
+
+\hypertarget{ux554fux984cux2175}{%
+\subsubsection{問題Ⅵ}\label{ux554fux984cux2175}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+空欄 & 解答 & ポイント \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+あ & (1/N) Σ{\fallbackfont ₖ} log p(x{\fallbackfont ₖ};
+θ)（平均対数尤度） & \\
+い & m-射影 & \\
+う & e-平坦 & \\
+え & k/N & 成功割合 \\
+お & exp(θ · F(x) − ψ(θ)) & \\
+か & ラグランジュの未定乗数 & \\
+き & e-射影 & 第1引数を動かす \\
+く & 増加しない（単調非増加） & 各ステップが最小化 \\
+け & 局所的な最小点（停留点） & 初期値に依存する \\
+こ & ① & \\
+\end{longtable}
+
+問1　D({\fallbackfont p̂}‖p\_θ) = Σ {\fallbackfont p̂} log
+{\fallbackfont p̂} − Σ{\fallbackfont ₓ} {\fallbackfont p̂}(x) log p(x;
+θ)。{\fallbackfont p̂}(x) は値 x の出現割合なので、第2項は (1/N)
+Σ{\fallbackfont ₖ} log p(x{\fallbackfont ₖ}; θ) に等しい。第1項は θ
+によらないから、D を最小にする θ は平均対数尤度を最大にする
+θ（最尤推定量）である。これは {\fallbackfont p̂} から M 上で
+D({\fallbackfont p̂}‖q) を最小にする点を探すこと、すなわち m-射影である。
+
+問2　L = −Σ p{\fallbackfont ₖ} log p{\fallbackfont ₖ} −
+λ{\fallbackfont ₀}(Σ p{\fallbackfont ₖ} − 1) − λ{\fallbackfont ₁}(Σ k
+p{\fallbackfont ₖ} − m) を p{\fallbackfont ₖ} で微分して 0 とおくと −log
+p{\fallbackfont ₖ} − 1 − λ{\fallbackfont ₀} − λ{\fallbackfont ₁}k =
+0、よって p{\fallbackfont ₖ} ∝ e\^{}(θk)（θ =
+−λ{\fallbackfont ₁}）。平均は θ について単調増加なので、m ごとに θ
+は一意。一様分布は平均 3.5 を満たしエントロピーが最大なので、m = 3.5
+のとき θ = 0。
+
+\hypertarget{ux554fux984cux2176}{%
+\subsubsection{問題Ⅶ}\label{ux554fux984cux2176}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+空欄 & 解答 & ポイント \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ア & δ{\fallbackfont ⁱⱼ}（i = j で 1、それ以外 0） &
+∂{\fallbackfont ⱼ}ξ{\fallbackfont ⁱ} \\
+イ & 1/g(ξ) & \\
+ウ & N g(ξ) & 独立なら情報は足し算 \\
+エ & 期待値パラメータ（η 座標） & \\
+オ & 標本平均 (1/N) Σ F(x{\fallbackfont ₖ}) & \\
+カ & 等号 & p(1 − p)/N = 1/(N g) \\
+キ & g(ξ){\fallbackfont ⁻}¹ & \\
+ク & 曲率（埋め込み曲率、e-曲率） & エフロンの統計的曲率 \\
+ケ & ① & \\
+\end{longtable}
+
+問1　アで i = j とすると E{[}(T − ξ) ∂l{]} =
+1。コーシー＝シュワルツの不等式より 1 ≤ E{[}(T − ξ)²{]} E{[}(∂l)²{]} =
+V{[}T{]} g(ξ)。等号は ∂l = c(ξ)(T − ξ)
+がほとんど確実に成り立つときで、両辺に (T − ξ) を掛けて期待値をとると
+c(ξ) = g(ξ)。
+
+問2　1個あたり g = 1/σ²、N 個で N/σ² なので限界は σ²/N。標本平均の分散は
+σ²/N で一致する。正規分布は x を統計量、μ
+を期待値パラメータとする指数型分布族なので、(2) の結論とも整合する。
+
+\hypertarget{ux554fux984cux2177}{%
+\subsubsection{問題Ⅷ}\label{ux554fux984cux2177}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+空欄 & 解答 & ポイント \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+イ & 2 & 問題Ⅰ(2) \\
+ロ & −1/2 & 問1 \\
+ハ & 半楕円 & 半円を μ 方向に √2 倍 \\
+ニ & √2 \textbar log(σ{\fallbackfont ₂}/σ{\fallbackfont ₁})\textbar{}
+& \\
+ホ & ① & \\
+ヘ & log(σ{\fallbackfont ₂}/σ{\fallbackfont ₁}) + (σ{\fallbackfont ₁}² +
+(μ{\fallbackfont ₁} − μ{\fallbackfont ₂})²)/(2σ{\fallbackfont ₂}²) − 1/2
+& 問2 \\
+ト & 0 & \\
+チ & 1/2 & \\
+リ & Σ{\fallbackfont ₁⁻}¹Σ{\fallbackfont ₂} & \\
+\end{longtable}
+
+ホの理由：μ 方向に dμ 動くコストは dμ/σ に比例するので、σ
+の大きい領域を通って横に移動するほうが短くなる。σ
+一定の線分は測地線ではなく、測地線は上に（σ
+の大きい方へ）ふくらむ半楕円である。
+
+問1　√(EG) = √2/σ²。G は u によらないので第1項は 0。E{\fallbackfont ᵥ} =
+−2/σ³ より E{\fallbackfont ᵥ}/√(EG) = −√2/σ、これを v（= σ）で微分すると
+√2/σ²。よって K = −(σ²/(2√2)) · (√2/σ²) = −1/2。
+
+問2　log(p{\fallbackfont ₁}/p{\fallbackfont ₂}) =
+log(σ{\fallbackfont ₂}/σ{\fallbackfont ₁}) − (x −
+μ{\fallbackfont ₁})²/(2σ{\fallbackfont ₁}²) + (x −
+μ{\fallbackfont ₂})²/(2σ{\fallbackfont ₂}²)。p{\fallbackfont ₁} のもとで
+E{[}(x − μ{\fallbackfont ₁})²{]} = σ{\fallbackfont ₁}²、E{[}(x −
+μ{\fallbackfont ₂})²{]} = σ{\fallbackfont ₁}² + (μ{\fallbackfont ₁} −
+μ{\fallbackfont ₂})² なので【ヘ】を得る。σ{\fallbackfont ₂} = σ +
+dσ、μ{\fallbackfont ₂} = μ + dμ（σ{\fallbackfont ₁} =
+σ、μ{\fallbackfont ₁} = μ）とおいて2次まで展開すると、log(1 + dσ/σ) ≈
+dσ/σ − dσ²/(2σ²)、(σ² + dμ²)/(2(σ + dσ)²) ≈ 1/2 − dσ/σ + 3dσ²/(2σ²) +
+dμ²/(2σ²) より、D ≈ (dμ² + 2dσ²)/(2σ²) = (1/2) ds²。
+
+\end{document}

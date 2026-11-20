@@ -1,0 +1,1066 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+  a4paper,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{Noto Serif CJK JP}
+  \setsansfont[]{Noto Sans CJK JP}
+  \setmonofont[]{Noto Sans Mono CJK JP}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=20mm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% XeLaTeX 用プリアンブル（pandoc の header-includes として読み込む）
+% 日本語専用パッケージ（xeCJK / luatexja）なしで組めるよう、
+% 本文フォントに和欧両対応の Noto Serif CJK JP を使い、
+% 和文の行分割は XeTeX 組み込みのロケール改行に任せる。
+\XeTeXlinebreaklocale "ja"
+\XeTeXlinebreakskip=0pt plus 0.5pt
+\XeTeXlinebreakpenalty=0
+\usepackage{amsmath,amssymb}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0.4\baselineskip}
+\renewcommand{\arraystretch}{1.25}
+\usepackage{etoolbox}
+\AtBeginEnvironment{longtable}{\small}
+
+% Noto Serif CJK JP に無い記号（上付き・下付きの添字文字、ℝ・ℕ、⟨ ⟩ など）用の補助フォント。
+% 該当箇所は latex/fallback-glyphs.lua が {\fallbackfont ...} で包む。
+\newfontfamily\fallbackfont{DejaVu Serif}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\hypertarget{ux6e2cux5ea6ux8ad6ux7684ux78baux7387ux8ad6-ux4eacux5927ux7269ux7406ux5f62ux5f0fux30c6ux30adux30b9ux30c8}{%
+\section{測度論的確率論
+京大物理形式テキスト}\label{ux6e2cux5ea6ux8ad6ux7684ux78baux7387ux8ad6-ux4eacux5927ux7269ux7406ux5f62ux5f0fux30c6ux30adux30b9ux30c8}}
+
+作成日：2026-11-09
+
+\hypertarget{ux4f7fux3044ux65b9}{%
+\subsection{使い方}\label{ux4f7fux3044ux65b9}}
+
+測度論的確率論の基礎を6テーマに分け、京大物理と同じ「誘導つきの長文＋空欄補充＋選択＋問」形式で1テーマ＝大問1題にまとめた。各大問は30〜40分を目安に、空欄を前から順に埋めると定義から主要定理まで一本道でたどれるように作ってある。
+
+\begin{itemize}
+\tightlist
+\item
+  【ア】などの空欄には式・集合・数値・語句を入れる。前の空欄の答えを後で使うことがある。
+\item
+  \{ コ \}
+  などの選択欄には①〜③から1つ選ぶ。前の空欄が解けなくても答えられる。
+\item
+  「問」は導出・証明・具体例の作成。答案は物理の記述問題と同じく、論理を短く書く。
+\item
+  記号は京大物理にならい、問題Ⅰ・Ⅳはカタカナ（ア〜）、問題Ⅱ・Ⅴはイロハ（イ〜）、問題Ⅲ・Ⅵはひらがな（あ〜）。
+\item
+  解答と解説は末尾にまとめた。
+\end{itemize}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+大問
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+テーマ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+到達目標
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Ⅰ & σ-加法族と可測空間 & 公理から生成σ-加法族・ボレル集合族を扱える \\
+Ⅱ & 確率測度の性質 & 連続性とボレル＝カンテリの補題を導ける \\
+Ⅲ & 確率変数と分布 & 可測性の判定、像測度、分布関数の性質 \\
+Ⅳ & 期待値とルベーグ積分 &
+単関数近似、単調収束・優収束定理の使いどころ \\
+Ⅴ & 独立性と大数の法則 &
+概収束と確率収束の違い、弱法則・強法則の証明の骨格 \\
+Ⅵ & 条件付き期待値 & σ-加法族に関する条件付き期待値の定義と性質 \\
+\end{longtable}
+
+共通の記号：(Ω, F, P) は確率空間、1\_A は集合 A
+の指示関数、A{\fallbackfont ᶜ} は補集合、B({\fallbackfont ℝ}) は
+{\fallbackfont ℝ} のボレル集合族とする。
+
+\hypertarget{ux554fux984cux2170-ux3c3-ux52a0ux6cd5ux65cfux3068ux53efux6e2cux7a7aux9593}{%
+\subsection{問題Ⅰ　σ-加法族と可測空間}\label{ux554fux984cux2170-ux3c3-ux52a0ux6cd5ux65cfux3068ux53efux6e2cux7a7aux9593}}
+
+次の文章を読んで、【　】に適した式・集合・数値を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。なお、【　】はすでに【　】で与えられたものと同じものを表す。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  確率を考える対象の全体を集合 Ω とし、確率を割り当てたい Ω
+  の部分集合（事象）の族を F とする。F が次の3条件を満たすとき、F を
+  σ-加法族といい、組 (Ω, F) を可測空間という。
+\end{enumerate}
+
+\begin{itemize}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\roman{enumi})}
+  \tightlist
+  \item
+    Ω ∈ F
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\roman{enumi})}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    A ∈ F ならば A{\fallbackfont ᶜ} ∈ F
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\roman{enumi})}
+  \setcounter{enumi}{2}
+  \tightlist
+  \item
+    A{\fallbackfont ₁}, A{\fallbackfont ₂}, \ldots{} ∈ F ならば
+    ∪{\fallbackfont ₙ} A{\fallbackfont ₙ} ∈ F
+  \end{enumerate}
+\end{itemize}
+
+この3条件から、可算個の共通部分についても閉じていることがわかる。実際、ド・モルガンの法則より
+∩{\fallbackfont ₙ} A{\fallbackfont ₙ} = (【ア】){\fallbackfont ᶜ}
+であり、右辺の括弧内は (ii)(iii) により F に属する。同様に、空集合は ∅ =
+(【イ】){\fallbackfont ᶜ} と書けるので F に属する。
+
+具体例として Ω = \{1, 2, 3, 4\} とし、A = \{1, 2\} を含む最小の σ-加法族
+σ(\{A\}) を求めよう。(i)(ii) より、少なくとも ∅, Ω, A と、A の補集合
+【ウ】 を含まなければならない。この4つの集合族はすでに (i)〜(iii)
+を満たすので、σ(\{A\}) = \{∅, A, 【ウ】, Ω\} であり、その要素数は 【エ】
+である。より一般に、Ω が互いに素な k 個の空でない集合
+B{\fallbackfont ₁}, \ldots, B{\fallbackfont ₖ}
+に分割されているとき、それらで生成される σ-加法族は「いくつかの
+B{\fallbackfont ᵢ} の和集合」全体と一致し、要素数は 【オ】 となる。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  任意の部分集合族 C に対し、C を含む σ-加法族はべき集合 2\^{}Ω
+  を始め少なくとも1つ存在する。それら全ての共通部分をとると、それは再び
+  σ-加法族となり、C を含む最小の σ-加法族になる。これを σ(C) と書き、C
+  で生成される σ-加法族という。
+\end{enumerate}
+
+{\fallbackfont ℝ} の開集合全体で生成される σ-加法族 B({\fallbackfont ℝ})
+をボレル集合族という。実は B({\fallbackfont ℝ}) は半直線の族 C = \{(−∞,
+x{]} : x ∈ {\fallbackfont ℝ}\} でも生成される。これを確かめるには、C
+から開区間がつくれることを示せばよい。まず半開区間は (a, b{]} = (−∞,
+b{]} \textbackslash{} 【カ】 と書ける。次に開区間は可算和
+
+\[(a, b) = \bigcup_{n=1}^{\infty} \left(a,\ \text{【キ】}\right]\]
+
+で表せるから σ(C) に属する。{\fallbackfont ℝ}
+の開集合は開区間の可算和で書けるので B({\fallbackfont ℝ}) ⊂ σ(C)
+が従う。逆向きの包含は (−∞, x{]}
+が閉集合であることから明らかである。なお1点集合も \{x\} =
+∩{\fallbackfont ₙ} (x − 1/n, 【ク】{]} と表せるので B({\fallbackfont ℝ})
+に属する。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  条件 (iii)
+  を「有限個の和について閉じている」に弱めたものを有限加法族という。Ω =
+  {\fallbackfont ℕ}（自然数全体）とし、F{\fallbackfont ₀}
+  を「有限集合、または補集合が有限集合であるもの」全体とする。F{\fallbackfont ₀}
+  は (i)(ii) を満たし、有限和でも閉じている。偶数全体の集合 E = \{2, 4,
+  6, \ldots\} は1点集合 \{2n\} の可算和だが、E も E{\fallbackfont ᶜ}
+  も無限集合なので E は F{\fallbackfont ₀} に属さない。したがって
+  F{\fallbackfont ₀} は \{ ケ \}。
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  ① σ-加法族である
+\item
+  ② 有限加法族だが σ-加法族ではない
+\item
+  ③ 有限加法族でもない
+\end{itemize}
+
+σ-加法族が「可算」個の操作で閉じていることは、確率の連続性や極限操作（問題Ⅱ以降）を扱うために本質的である。可算和の代わりに非可算和まで許すと、{\fallbackfont ℝ}
+上で長さ（ルベーグ測度）と両立しなくなることが知られている。このことから、F
+を Ω のべき集合ではなく適切な
+σ-加法族にとる理由は、測度をうまく定義できる集合に限るためだとわかる。
+
+問1　Ω = {\fallbackfont ℕ} において、すべての1点集合 \{n\} を含む最小の
+σ-加法族は、べき集合 2\^{}{\fallbackfont ℕ} に一致することを示せ。
+
+問2　Ω = \{1, 2, 3\} とする。2つの σ-加法族 F{\fallbackfont ₁} =
+σ(\{\{1\}\})、F{\fallbackfont ₂} = σ(\{\{2\}\}) の和集合
+F{\fallbackfont ₁} ∪ F{\fallbackfont ₂} は
+σ-加法族でないことを、具体的な集合を挙げて示せ。また、その結果から
+σ(F{\fallbackfont ₁} ∪ F{\fallbackfont ₂}) を求めよ。
+
+\hypertarget{ux554fux984cux2171-ux78baux7387ux6e2cux5ea6ux306eux6027ux8ceaux9023ux7d9aux6027ux30dcux30ecux30ebux30abux30f3ux30c6ux30eaux306eux88dcux984c}{%
+\subsection{問題Ⅱ　確率測度の性質・連続性・ボレル＝カンテリの補題}\label{ux554fux984cux2171-ux78baux7387ux6e2cux5ea6ux306eux6027ux8ceaux9023ux7d9aux6027ux30dcux30ecux30ebux30abux30f3ux30c6ux30eaux306eux88dcux984c}}
+
+次の文章を読んで、【　】に適した式・集合・数値を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  可測空間 (Ω, F) 上の関数 P : F → {[}0, 1{]} が P(Ω) = 1 と可算加法性
+\end{enumerate}
+
+\[A_1, A_2, \ldots \in \mathcal{F}\ \text{が互いに素} \implies P\Big(\bigcup_{n=1}^{\infty} A_n\Big) = \sum_{n=1}^{\infty} P(A_n)\]
+
+を満たすとき、P を確率測度といい、(Ω, F, P)
+を確率空間という。A{\fallbackfont ₁} = Ω、A{\fallbackfont ₂} =
+A{\fallbackfont ₃} = \ldots{} = ∅ とおくと可算加法性から P(∅) = 【イ】
+が従い、これと組み合わせると有限加法性も得られる。A ⊂ B のとき B は A と
+【ロ】 の互いに素な和なので P(B) = P(A) + P(【ロ】) ≥
+P(A)（単調性）。また一般の A, B について P(A ∪ B) = P(A) + P(B) − 【ハ】
+が成り立つ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  可算加法性の最も重要な帰結は「確率の連続性」である。増加列
+  A{\fallbackfont ₁} ⊂ A{\fallbackfont ₂} ⊂ \ldots{} について A =
+  ∪{\fallbackfont ₙ} A{\fallbackfont ₙ} とする。A{\fallbackfont ₀} = ∅
+  とし、B{\fallbackfont ₖ} = A{\fallbackfont ₖ} \textbackslash{}
+  A{\fallbackfont ₖ₋₁}（k = 1, 2, \ldots）とおくと、B{\fallbackfont ₖ}
+  は互いに素で、B{\fallbackfont ₁} ∪ B{\fallbackfont ₂} ∪ \ldots{} ∪
+  B{\fallbackfont ₙ} = 【ニ】、B{\fallbackfont ₁} ∪ B{\fallbackfont ₂} ∪
+  \ldots（無限和）= A となる。したがって可算加法性より
+\end{enumerate}
+
+\[P(A) = \sum_{k=1}^{\infty} P(B_k) = \lim_{n\to\infty} \text{【ホ】} = \lim_{n\to\infty} P(A_n)\]
+
+を得る。減少列 A{\fallbackfont ₁} ⊃ A{\fallbackfont ₂} ⊃ \ldots{}
+についても P(∩{\fallbackfont ₙ} A{\fallbackfont ₙ}) =
+lim{\fallbackfont ₙ} P(A{\fallbackfont ₙ})
+が成り立つ（問1）。ただし、この減少列の連続性は測度が有限であることを使っている。たとえば
+{\fallbackfont ℝ} 上のルベーグ測度 λ と A{\fallbackfont ₙ} = {[}n, ∞)
+を考えると、すべての n で λ(A{\fallbackfont ₙ}) = 【ヘ】
+だが、∩{\fallbackfont ₙ} A{\fallbackfont ₙ} = 【ト】
+なので連続性が成り立たない。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  事象列 A{\fallbackfont ₁}, A{\fallbackfont ₂}, \ldots{}
+  に対し、上極限事象を
+\end{enumerate}
+
+\[\limsup_{n\to\infty} A_n = \bigcap_{n=1}^{\infty} \bigcup_{k=n}^{\infty} A_k\]
+
+で定める。これは「無限に多くの A{\fallbackfont ₙ}
+が起こる」という事象を表す。∪\_\{k≥n\} A{\fallbackfont ₖ} は n
+について減少列なので、(2)
+の連続性と劣加法性（可算加法性から導かれる）により
+
+\[P\Big(\limsup_{n\to\infty} A_n\Big) = \lim_{n\to\infty} P\Big(\bigcup_{k=n}^{\infty} A_k\Big) \le \lim_{n\to\infty} \text{【チ】}\]
+
+となる。Σ{\fallbackfont ₙ} P(A{\fallbackfont ₙ}) \textless{} ∞
+ならば【チ】は収束級数の残りの部分なので 0 に収束し、P(limsup
+A{\fallbackfont ₙ}) = 【リ】
+を得る。これをボレル＝カンテリの第1補題という。独立性を仮定していないことに注意せよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Ω = {[}0, 1{]}、F = B({[}0, 1{]})、P
+  を長さ（ルベーグ測度）とする。各1点 \{x\} の確率は 0 である。{[}0,
+  1{]} に含まれる有理数全体の集合 Q{\fallbackfont ₀} の確率は \{ ヌ \}。
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  ① 0 である。Q{\fallbackfont ₀} は可算集合なので可算加法性から求まる
+\item
+  ② 1 である。Q{\fallbackfont ₀} は {[}0, 1{]} で稠密だから
+\item
+  ③ Q{\fallbackfont ₀} は F に属さないので定義できない
+\end{itemize}
+
+問1　増加列についての連続性を用いて、減少列 A{\fallbackfont ₁} ⊃
+A{\fallbackfont ₂} ⊃ \ldots{} について P(∩{\fallbackfont ₙ}
+A{\fallbackfont ₙ}) = lim{\fallbackfont ₙ} P(A{\fallbackfont ₙ})
+を示せ。
+
+問2　ある実験を繰り返し、事象 A{\fallbackfont ₙ} を「n
+回目に成功する」とする。試行どうしの独立性は仮定せず、P(A{\fallbackfont ₙ})
+= 1/n²
+であることだけがわかっている。成功が無限回起こる確率を求め、理由を述べよ。
+
+\hypertarget{ux554fux984cux2172-ux78baux7387ux5909ux6570ux5206ux5e03ux5206ux5e03ux95a2ux6570}{%
+\subsection{問題Ⅲ　確率変数・分布・分布関数}\label{ux554fux984cux2172-ux78baux7387ux5909ux6570ux5206ux5e03ux5206ux5e03ux95a2ux6570}}
+
+次の文章を読んで、【　】に適した式・集合・語句を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  確率空間 (Ω, F, P) 上の関数 X : Ω → {\fallbackfont ℝ}
+  が確率変数であるとは、任意のボレル集合 B ∈ B({\fallbackfont ℝ})
+  に対して逆像 X{\fallbackfont ⁻}¹(B) = \{ω : X(ω) ∈ B\} が 【あ】
+  に属することをいう。つまり「X の値が B
+  に入る」という出来事に確率が定まっていることを要請している。
+\end{enumerate}
+
+すべてのボレル集合を調べるのは大変だが、実は任意の x ∈ {\fallbackfont ℝ}
+に対し \{X ≤ x\} ∈ F であれば十分である。これを示すため、G = \{B ⊂
+{\fallbackfont ℝ} : X{\fallbackfont ⁻}¹(B) ∈ F\}
+とおく。逆像は集合演算と交換し、X{\fallbackfont ⁻}¹(B{\fallbackfont ᶜ})
+= 【い】、X{\fallbackfont ⁻}¹(∪{\fallbackfont ₙ} B{\fallbackfont ₙ}) =
+∪{\fallbackfont ₙ} X{\fallbackfont ⁻}¹(B{\fallbackfont ₙ})
+が成り立つ。これと X{\fallbackfont ⁻}¹({\fallbackfont ℝ}) = Ω から G は
+σ-加法族である。仮定より G は半直線 (−∞, x{]} をすべて含むので、問題Ⅰ(2)
+の結果から G ⊃ 【う】 となり、X
+は確率変数である。このように「生成系で確かめれば十分」という論法は、測度論で繰り返し使われる。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  確率変数 X に対し、μ(B) = P(【え】)（B ∈
+  B({\fallbackfont ℝ})）で定まる ({\fallbackfont ℝ},
+  B({\fallbackfont ℝ})) 上の確率測度 μ を X の分布という。Ω 上の確率 P
+  を X で {\fallbackfont ℝ}
+  に「押し出した」測度であり、像測度とも呼ばれる。分布関数を F(x) =
+  μ((−∞, x{]}) = P(X ≤ x) で定めると、F は単調非減少であり、
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  x → −∞ のとき F(x) → 【お】、x → +∞ のとき F(x) → 【か】
+\item
+  右連続：F(x + 1/n) → F(x)（n → ∞）
+\end{itemize}
+
+が成り立つ。右連続性は、半直線 (−∞, x + 1/n{]} が n について 【き】
+であり、その共通部分が (−∞, x{]} であることと、問題Ⅱ(2)
+の連続性から従う。一方、左極限 F(x−) = lim（y ↑ x）F(y) は P(X
+\textless{} x) に等しく、1点の確率は P(X = x) = F(x) − 【く】
+で与えられる。分布関数が連続であることと、すべての1点の確率が 0
+であることは同値である。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Ω = {[}0, 1{]}、F = B({[}0, 1{]})、P をルベーグ測度とし、X(ω) = −log
+  ω（ω \textgreater{} 0）、X(0) = 0 と定める。X は連続関数（ω
+  \textgreater{} 0 の部分）なので確率変数である。t ≥ 0 に対して \{X
+  \textgreater{} t\} = \{ω : ω \textless{} e\^{}(−t)\} だから P(X
+  \textgreater{} t) = 【け】 となり、X はパラメータ 1
+  の指数分布に従う。このように「一様分布から好きな分布をつくる」操作は、乱数生成の基礎になっている。一般に、連続かつ狭義単調増加な分布関数
+  F と、{[}0, 1{]} 上の一様分布に従う U に対し、F{\fallbackfont ⁻}¹(U)
+  の分布関数は \{ こ \}。
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  ① F である
+\item
+  ② 1 − F である
+\item
+  ③ F{\fallbackfont ⁻}¹ である
+\end{itemize}
+
+問1　X, Y が確率変数ならば X + Y も確率変数であることを、集合の等式
+
+\[\{X + Y < x\} = \bigcup_{q \in \mathbb{Q}} \big(\{X < q\} \cap \{Y < x - q\}\big)\]
+
+を用いて説明せよ。等式自体の成立理由も述べること。
+
+問2　確率変数 X の分布関数が次で与えられている。
+
+\[F(x) = \begin{cases} 0 & (x < 0) \\ \dfrac{1}{2} & (0 \le x < 1) \\ \dfrac{x+1}{4} & (1 \le x < 3) \\ 1 & (x \ge 3) \end{cases}\]
+
+P(X = 0)、P(1/2 \textless{} X ≤ 2)
+を求めよ。また、この分布が離散分布でも密度関数をもつ分布でもないことを説明せよ。
+
+\hypertarget{ux554fux984cux2173-ux671fux5f85ux5024ux3068ux30ebux30d9ux30fcux30b0ux7a4dux5206ux53ceux675fux5b9aux7406}{%
+\subsection{問題Ⅳ　期待値とルベーグ積分・収束定理}\label{ux554fux984cux2173-ux671fux5f85ux5024ux3068ux30ebux30d9ux30fcux30b0ux7a4dux5206ux53ceux675fux5b9aux7406}}
+
+次の文章を読んで、【　】に適した式・数値・語句を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  期待値は「値 ×
+  確率」の和を、一般の確率変数に拡張したものである。互いに素な
+  A{\fallbackfont ₁}, \ldots, A{\fallbackfont ₖ} ∈ F と実数
+  a{\fallbackfont ₁}, \ldots, a{\fallbackfont ₖ} ≥ 0 を用いて s =
+  a{\fallbackfont ₁}1(A{\fallbackfont ₁}) + \ldots{} +
+  a{\fallbackfont ₖ}1(A{\fallbackfont ₖ})
+  と書ける関数を（非負）単関数という（1(A) は A
+  の指示関数）。単関数の期待値は E{[}s{]} = a{\fallbackfont ₁}【ア】 +
+  \ldots{} + a{\fallbackfont ₖ}P(A{\fallbackfont ₖ})
+  と定める。非負の確率変数 X の期待値は
+\end{enumerate}
+
+E{[}X{]} = sup\{ E{[}s{]} : s は単関数で 0 ≤ s ≤ X \}
+
+で定義する（値 +∞ も許す）。これが E{[}X{]} = ∫ X dP
+と書かれるルベーグ積分である。リーマン積分が「定義域を細かく分ける」のに対し、ルベーグ積分は「値域を細かく分ける」点が要点である。
+
+X を下から近似する単関数の列を具体的に作ろう。n = 1, 2, \ldots{} に対し
+
+\[X_n = \sum_{k=0}^{n2^n - 1} \frac{k}{2^n}\, \mathbf{1}\Big\{\frac{k}{2^n} \le X < \frac{k+1}{2^n}\Big\} + n\, \mathbf{1}\{X \ge n\}\]
+
+とおく。値域 {[}0, n) を幅 2{\fallbackfont ⁻ⁿ}
+の区間に分け、各区間の左端の値で切り下げたものである。この
+X{\fallbackfont ₙ} は n について 【イ】 であり（問1）、X(ω) \textless{}
+n を満たす ω では 0 ≤ X(ω) − X{\fallbackfont ₙ}(ω) \textless{} 【ウ】
+が成り立つ。よって各 ω で X{\fallbackfont ₙ}(ω) → X(ω) となる。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  単調収束定理：「0 ≤ X{\fallbackfont ₁} ≤ X{\fallbackfont ₂} ≤ \ldots{}
+  かつ X{\fallbackfont ₙ} → X（各点）ならば E{[}X{\fallbackfont ₙ}{]} →
+  E{[}X{]}」が成り立つ。(1) の近似と組み合わせると、E{[}X{]} は
+  E{[}X{\fallbackfont ₙ}{]}
+  の極限として計算でき、和や定数倍の線形性も単関数から極限で引き継がれる。
+\end{enumerate}
+
+符号の変わる X に対しては X{\fallbackfont ⁺} = max(X,
+0)、X{\fallbackfont ⁻} = 【エ】 とおき、X = X{\fallbackfont ⁺} −
+X{\fallbackfont ⁻}、E{[}X{]} = E{[}X{\fallbackfont ⁺}{]} −
+E{[}X{\fallbackfont ⁻}{]} と定める。この差が意味をもつのは
+E{[}X{\fallbackfont ⁺}{]} と E{[}X{\fallbackfont ⁻}{]}
+の少なくとも一方が有限のときである。\textbar X\textbar{} = 【オ】
+と書けるので、E{[}\textbar X\textbar{]} \textless{} ∞ のとき X
+は可積分であるという。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  極限と期待値の順序交換は無条件には許されない。Ω = {[}0, 1{]}
+  にルベーグ測度を入れ、f{\fallbackfont ₙ} = n·1((0, 1/n)) とする。各 ω
+  で f{\fallbackfont ₙ}(ω) → 【カ】 だが、E{[}f{\fallbackfont ₙ}{]} =
+  【キ】 なので、lim E{[}f{\fallbackfont ₙ}{]} ≠ E{[}lim
+  f{\fallbackfont ₙ}{]} である。この例は次の2定理の境目を示している。
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  ファトゥの補題：f{\fallbackfont ₙ} ≥ 0 ならば E{[}liminf
+  f{\fallbackfont ₙ}{]} ≤ liminf E{[}f{\fallbackfont ₙ}{]}（この例では 0
+  ≤ 【キ】 で等号は成り立たない）
+\item
+  優収束定理：f{\fallbackfont ₙ} → f（各点）かつ、すべての n で
+  \textbar f{\fallbackfont ₙ}\textbar{} ≤ g となる可積分な g があれば
+  E{[}f{\fallbackfont ₙ}{]} → E{[}f{]}
+\end{itemize}
+
+この例で g として最小にとれるのは g(ω) = sup{\fallbackfont ₙ}
+f{\fallbackfont ₙ}(ω) であり、g(ω) はおよそ 1/ω に等しい。その期待値は
+∫{\fallbackfont ₀}¹ (1/ω) dω と同程度で 【ク】
+となるので、優収束定理の仮定が満たされない。確率の質量が小さな集合に「逃げて」いく状況では交換が破れる、と理解するとよい。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  X が値 x{\fallbackfont ₁}, x{\fallbackfont ₂}, \ldots{} を確率
+  p{\fallbackfont ₁}, p{\fallbackfont ₂}, \ldots{} でとる離散型なら
+  E{[}X{]} = Σ x{\fallbackfont ᵢ}p{\fallbackfont ᵢ}、密度 f をもつなら
+  E{[}X{]} = ∫ x f(x) dx であった。測度論ではこの2つは X の分布
+  μ（問題Ⅲ）を用いた E{[}X{]} = ∫{\fallbackfont ℝ} x μ(dx)
+  に統一される。より一般に E{[}g(X){]} = ∫{\fallbackfont ℝ} g(x) μ(dx)
+  が成り立つが、この等式は \{ ケ \} と呼ばれる。
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  ① 変数変換公式（像測度に関する積分の公式）
+\item
+  ② フビニの定理
+\item
+  ③ チェビシェフの不等式
+\end{itemize}
+
+問1　(1) の X{\fallbackfont ₙ} について、X{\fallbackfont ₙ} ≤
+X{\fallbackfont ₙ₊₁} が各点で成り立つことを示せ。（ヒント：幅
+2{\fallbackfont ⁻ⁿ} の区間を2等分すると幅
+2{\fallbackfont ⁻⁽ⁿ⁺}¹{\fallbackfont ⁾} の区間が2つできる。）
+
+問2　X ≥ 0、a \textgreater{} 0 のとき、不等式 a·1\{X ≥ a\} ≤ X
+を用いて、マルコフの不等式 P(X ≥ a) ≤ E{[}X{]}/a を導け。
+
+\hypertarget{ux554fux984cux2174-ux72ecux7acbux6027ux53ceux675fux6982ux5ff5ux5927ux6570ux306eux6cd5ux5247}{%
+\subsection{問題Ⅴ　独立性・収束概念・大数の法則}\label{ux554fux984cux2174-ux72ecux7acbux6027ux53ceux675fux6982ux5ff5ux5927ux6570ux306eux6cd5ux5247}}
+
+次の文章を読んで、【　】に適した式・数値を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  事象 A, B が独立であるとは P(A ∩ B) = 【イ】
+  が成り立つことをいう。測度論では独立性を
+  σ-加法族の言葉で述べる。部分σ-加法族 G, H ⊂ F
+  が独立であるとは、すべての A ∈ G, B ∈ H について P(A ∩ B) = 【イ】
+  が成り立つことである。確率変数 X に対し σ(X) =
+  \{X{\fallbackfont ⁻}¹(B) : B ∈ B({\fallbackfont ℝ})\} は X が生成する
+  σ-加法族で、「X の値を見てわかる事象」の全体を表す。X と Y
+  が独立であるとは σ(X) と σ(Y) が独立であることと定義する。
+\end{enumerate}
+
+X, Y が独立で可積分なら E{[}XY{]} = 【ロ】
+が成り立つ（指示関数で成立を確かめ、単関数、非負関数、一般の関数へと問題Ⅳの手順で拡張する）。分散については
+V(X + Y) = V(X) + V(Y) + 2【ハ】 であり、独立なら 【ハ】 = 0 となる。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  確率変数列 X{\fallbackfont ₁}, X{\fallbackfont ₂}, \ldots{} の X
+  への収束には複数の意味がある。
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  概収束：P(lim{\fallbackfont ₙ} X{\fallbackfont ₙ} = X) = 1
+\item
+  確率収束：任意の ε \textgreater{} 0 で P(\textbar X{\fallbackfont ₙ} −
+  X\textbar{} \textgreater{} ε) → 0
+\end{itemize}
+
+概収束ならば確率収束する（問1）が、逆は成り立たない。反例として Ω =
+{[}0, 1{]}（ルベーグ測度）上で、n = 2\^{}m + j（m = 0, 1, 2, \ldots、0 ≤
+j \textless{} 2\^{}m）と一意に書いて、X{\fallbackfont ₙ} を区間
+{[}j/2\^{}m, (j+1)/2\^{}m{]}
+の指示関数とする（「タイプライター列」）。P(X{\fallbackfont ₙ} ≠ 0) =
+【ニ】 は n → ∞ で 0 に近づくので X{\fallbackfont ₙ} は 0
+に確率収束する。しかし各 m ごとに区間が {[}0, 1{]}
+を左から右へ一巡するため、どの ω についても X{\fallbackfont ₙ}(ω) = 1
+となる n が無限にあり、limsup X{\fallbackfont ₙ}(ω) = 【ホ】
+となる。よって X{\fallbackfont ₙ} はどの点でも 0 に収束しない。
+
+もっとも、確率収束する列からは必ず概収束する部分列を取り出せる。すなわち、確率収束するが概収束しない列でも、適当な部分列をとると
+\{ ヌ \}。
+
+\begin{itemize}
+\tightlist
+\item
+  ① 必ず概収束する
+\item
+  ② 概収束する部分列が存在しないこともある
+\item
+  ③ 部分列をとっても確率収束すら保たれない
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  大数の弱法則。X{\fallbackfont ₁}, X{\fallbackfont ₂}, \ldots{}
+  は独立同分布で E{[}X{\fallbackfont ᵢ}{]} = m、V(X{\fallbackfont ᵢ}) =
+  σ² \textless{} ∞ とし、S{\fallbackfont ₙ} = X{\fallbackfont ₁} +
+  \ldots{} + X{\fallbackfont ₙ} とおく。(1) より V(S{\fallbackfont ₙ}/n)
+  = 【ヘ】 である。チェビシェフの不等式（問題Ⅳ問2のマルコフの不等式を
+  (S{\fallbackfont ₙ}/n − m)² に適用したもの）から
+\end{enumerate}
+
+\[P\Big(\Big|\frac{S_n}{n} - m\Big| \ge \varepsilon\Big) \le \text{【ト】} \longrightarrow 0\]
+
+となり、S{\fallbackfont ₙ}/n は m に確率収束する。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  大数の強法則（4次モーメントを仮定した簡易版）。さらに
+  E{[}(X{\fallbackfont ᵢ} − m){\fallbackfont ⁴}{]} = K \textless{} ∞
+  を仮定し、Y{\fallbackfont ᵢ} = X{\fallbackfont ᵢ} − m
+  とおく。(Y{\fallbackfont ₁} + \ldots{} +
+  Y{\fallbackfont ₙ}){\fallbackfont ⁴} を展開すると、どれか1つの
+  Y{\fallbackfont ᵢ} が1乗で現れる項は、独立性と
+  E{[}Y{\fallbackfont ᵢ}{]} = 0 により期待値が 0 になる。残るのは
+  Y{\fallbackfont ᵢ⁴} の形の項と、i ≠ j についての
+  Y{\fallbackfont ᵢ}²Y{\fallbackfont ⱼ}² の形の項だけなので
+\end{enumerate}
+
+\[E\big[(Y_1 + \cdots + Y_n)^4\big] = nK + \text{【チ】}\]
+
+を得る。これに4乗についてのマルコフの不等式を使うと、P(\textbar S{\fallbackfont ₙ}/n
+− m\textbar{} ≥ ε) は定数 C を用いて C/n\^{}【リ】
+以下で抑えられる。この級数は収束するので、問題Ⅱのボレル＝カンテリの第1補題により、確率1で
+\textbar S{\fallbackfont ₙ}/n − m\textbar{} ≥ ε
+は有限回しか起こらない。ε = 1, 1/2, 1/3, \ldots{}
+の可算個について同じ議論をすれば、S{\fallbackfont ₙ}/n は m
+に概収束する。弱法則と強法則の差は、確率収束と概収束の差そのものである。
+
+問1　X{\fallbackfont ₙ} が X
+に概収束するならば確率収束することを示せ。（ヒント：事象
+\{\textbar X{\fallbackfont ₙ} − X\textbar{} \textgreater{} ε\}
+の上極限を考え、問題Ⅱの連続性を用いよ。）
+
+問2　(2) のタイプライター列から、0
+に概収束する部分列を1つ具体的に挙げ、概収束することを確かめよ。
+
+\hypertarget{ux554fux984cux2175-ux6761ux4ef6ux4ed8ux304dux671fux5f85ux5024}{%
+\subsection{問題Ⅵ　条件付き期待値}\label{ux554fux984cux2175-ux6761ux4ef6ux4ed8ux304dux671fux5f85ux5024}}
+
+次の文章を読んで、【　】に適した式・語句を、\{　\}
+からは適切なものを一つ選びその番号を、それぞれ答えよ。また、問1・問2では指示にしたがって答えよ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  初等的な条件付き期待値 E{[}X \textbar{} B{]} = E{[}X·1(B){]} /
+  P(B)（P(B) \textgreater{} 0）を、σ-加法族に関する形に書き直そう。Ω
+  が互いに素な事象 B{\fallbackfont ₁}, \ldots, B{\fallbackfont ₖ}（各
+  P(B{\fallbackfont ᵢ}) \textgreater{} 0）に分割されているとし、G =
+  σ(B{\fallbackfont ₁}, \ldots, B{\fallbackfont ₖ}) とおく。G は「どの
+  B{\fallbackfont ᵢ} が起きたかだけがわかる」情報を表す。このとき
+\end{enumerate}
+
+\[E[X \mid \mathcal{G}](\omega) = \sum_{i=1}^{k} \frac{E[X \mathbf{1}_{B_i}]}{\text{【あ】}}\, \mathbf{1}_{B_i}(\omega)\]
+
+と定める。これは数ではなく確率変数であり、各 B{\fallbackfont ᵢ}
+の上で一定値をとるので 【い】 である。さらに、任意の G ∈ G は
+B{\fallbackfont ᵢ} のいくつかの和なので、E{[} E{[}X \textbar{} G{]}·1(G)
+{]} = 【う】 が成り立つ。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  一般の部分σ-加法族 G ⊂ F と可積分な X に対しては、(1)
+  で見た2つの性質を定義として採用する。すなわち、確率変数 Y が
+\end{enumerate}
+
+\begin{itemize}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\alph{enumi})}
+  \tightlist
+  \item
+    Y は G-可測である
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\alph{enumi})}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    すべての G ∈ G について E{[}Y·1(G){]} = E{[}X·1(G){]}
+  \end{enumerate}
+\end{itemize}
+
+を満たすとき、Y を G に関する X の条件付き期待値といい、E{[}X \textbar{}
+G{]} と書く。P(B) = 0
+の事象で割り算をする必要がないことがこの定義の利点である。
+
+存在はラドン＝ニコディムの定理から従う。X ≥ 0 のとき ν(G) =
+E{[}X·1(G){]}（G ∈ G）は (Ω, G) 上の有限測度であり、P を G
+に制限したものに対して 【え】 である（P(G) = 0 ならば ν(G) =
+0）。したがって密度 dν/dP が G-可測関数として存在し、それが E{[}X
+\textbar{} G{]} である。一般の X は X{\fallbackfont ⁺},
+X{\fallbackfont ⁻} に分けて扱う。
+
+一意性も確かめよう。Y と Y′ がともに (a)(b) を満たすとき、G = \{Y
+\textgreater{} Y′\} は G に属し、(b) より E{[}(Y − Y′)·1(G){]} = 0
+である。被積分関数は G 上で正なので P(Y \textgreater{} Y′) = 【お】
+となり、同様に P(Y \textless{} Y′) = 【お】
+である。つまり条件付き期待値は確率0の差を除いて一意に定まる。
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  定義 (a)(b) から次の性質が導かれる。
+\end{enumerate}
+
+\begin{itemize}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\alph{enumi})}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    で G = Ω とすると E{[} E{[}X \textbar{} G{]} {]} = 【か】
+  \end{enumerate}
+\item
+  Z が G-可測で有界ならば E{[}ZX \textbar{} G{]} =
+  【き】（「わかっている量は外に出せる」）
+\item
+  X が G と独立ならば E{[}X \textbar{} G{]} =
+  【く】（情報が役に立たない）
+\item
+  H ⊂ G ならば E{[} E{[}X \textbar{} G{]} \textbar{} H {]} =
+  【け】（粗い情報で平均し直すとよい：塔の性質）
+\end{itemize}
+
+さらに E{[}X²{]} \textless{} ∞ のとき、G-可測な二乗可積分確率変数全体
+L²(Ω, G, P) は L²(Ω, F, P) の閉部分空間になり、E{[}X \textbar{} G{]}
+はこの部分空間への \{ こ \} とみなせる。
+
+\begin{itemize}
+\tightlist
+\item
+  ① 直交射影
+\item
+  ② 等長写像
+\item
+  ③ 微分作用素
+\end{itemize}
+
+問1　公正なサイコロを1回振り、出た目を X とする。G = σ(\{偶数の目\})
+とするとき、E{[}X \textbar{} G{]} を求めよ。また E{[} E{[}X \textbar{}
+G{]} {]} = E{[}X{]} を確かめよ。
+
+問2　E{[}X²{]} \textless{} ∞ とする。G-可測で E{[}Z²{]} \textless{} ∞
+を満たす任意の Z に対し
+
+\[E\big[(X - Z)^2\big] \ge E\big[(X - E[X \mid \mathcal{G}])^2\big]\]
+
+が成り立つことを示せ。（ヒント：X − Z = (X − E{[}X \textbar{} G{]}) +
+(E{[}X \textbar{} G{]} − Z) と分け、交差項が 0 になることを (3)
+の性質を用いて示す。）
+
+\hypertarget{ux89e3ux7b54ux3068ux89e3ux8aac}{%
+\subsection{解答と解説}\label{ux89e3ux7b54ux3068ux89e3ux8aac}}
+
+空欄は表で、問は答案例で示す。答案例は要点を押さえた1つの書き方であり、これに限らない。
+
+\hypertarget{ux554fux984cux2170}{%
+\subsubsection{問題Ⅰ}\label{ux554fux984cux2170}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+空欄 & 解答 & ポイント \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ア & ∪{\fallbackfont ₙ} A{\fallbackfont ₙᶜ} & ド・モルガン \\
+イ & Ω & (i)(ii) から ∅ ∈ F \\
+ウ & \{3, 4\} & A の補集合 \\
+エ & 4 & \\
+オ & 2{\fallbackfont ᵏ} & 各 B{\fallbackfont ᵢ} を含めるか否かの2択が k
+回 \\
+カ & (−∞, a{]} & \\
+キ & b − 1/n & 右端を内側から b に近づける \\
+ク & x & \\
+ケ & ② & 偶数全体が反例 \\
+\end{longtable}
+
+問1　求める σ-加法族を F* とする。F* ⊂ 2\^{}{\fallbackfont ℕ}
+は明らか。任意の A ⊂ {\fallbackfont ℕ} は高々可算集合なので、A = ∪（n ∈
+A）\{n\} と1点集合の可算和で書け、(iii) より A ∈ F*。よって
+2\^{}{\fallbackfont ℕ} ⊂ F* となり、F* = 2\^{}{\fallbackfont ℕ}。
+
+問2　F{\fallbackfont ₁} = \{∅, \{1\}, \{2, 3\}, Ω\}、F{\fallbackfont ₂}
+= \{∅, \{2\}, \{1, 3\}, Ω\}。\{1\}, \{2\} ∈ F{\fallbackfont ₁} ∪
+F{\fallbackfont ₂} だが、和 \{1, 2\} はどちらにも属さないので (iii)
+が成り立たない。σ(F{\fallbackfont ₁} ∪ F{\fallbackfont ₂}) は \{1\},
+\{2\} と \{3\} = \{1, 2\}{\fallbackfont ᶜ}
+を含むので全1点集合を含み、2\^{}Ω（要素数8）に一致する。
+
+\hypertarget{ux554fux984cux2171}{%
+\subsubsection{問題Ⅱ}\label{ux554fux984cux2171}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+空欄 & 解答 & ポイント \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+イ & 0 & P(∅) が正だと右辺が発散 \\
+ロ & B \textbackslash{} A & \\
+ハ & P(A ∩ B) & 重複して数えた分を引く \\
+ニ & A{\fallbackfont ₙ} & \\
+ホ & P(B{\fallbackfont ₁}) + \ldots{} + P(B{\fallbackfont ₙ})（=
+P(A{\fallbackfont ₙ})） & 有限加法性 \\
+ヘ & ∞ & \\
+ト & ∅ & どの実数もいずれ {[}n, ∞) から外れる \\
+チ & Σ（k = n〜∞）P(A{\fallbackfont ₖ}) & 劣加法性 \\
+リ & 0 & \\
+ヌ & ① & 1点の確率0の可算和 \\
+\end{longtable}
+
+問1　C{\fallbackfont ₙ} = A{\fallbackfont ₙᶜ} とおくと
+C{\fallbackfont ₁} ⊂ C{\fallbackfont ₂} ⊂ \ldots{}
+は増加列で、∪{\fallbackfont ₙ} C{\fallbackfont ₙ} = (∩{\fallbackfont ₙ}
+A{\fallbackfont ₙ}){\fallbackfont ᶜ}。増加列の連続性より
+P(∩{\fallbackfont ₙ} A{\fallbackfont ₙ}) = 1 − P(∪{\fallbackfont ₙ}
+C{\fallbackfont ₙ}) = 1 − lim{\fallbackfont ₙ} P(C{\fallbackfont ₙ}) =
+lim{\fallbackfont ₙ} P(A{\fallbackfont ₙ})。（補集合をとるところで P(Ω)
+= 1 \textless{} ∞ を使っている。）
+
+問2　Σ 1/n² = π²/6 \textless{} ∞ なので、ボレル＝カンテリの第1補題より
+P(limsup A{\fallbackfont ₙ}) = 0。成功が無限回起こる確率は
+0。第1補題は独立性を必要としないので、情報が不足していても結論が出る。
+
+\hypertarget{ux554fux984cux2172}{%
+\subsubsection{問題Ⅲ}\label{ux554fux984cux2172}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+空欄 & 解答 & ポイント \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+あ & F & \\
+い & X{\fallbackfont ⁻}¹(B){\fallbackfont ᶜ} & 逆像は補集合と交換する \\
+う & B({\fallbackfont ℝ}) & G は生成系を含む σ-加法族 \\
+え & X{\fallbackfont ⁻}¹(B)（= \{X ∈ B\}） & \\
+お & 0 & \\
+か & 1 & \\
+き & 減少列 & \\
+く & F(x−) & ジャンプの大きさ \\
+け & e\^{}(−t) & \\
+こ & ① & P(F{\fallbackfont ⁻}¹(U) ≤ x) = P(U ≤ F(x)) = F(x) \\
+\end{longtable}
+
+問1　等式：X + Y \textless{} x ならば X \textless{} x − Y
+なので、有理数の稠密性から X \textless{} q \textless{} x − Y を満たす q
+∈ {\fallbackfont ℚ} がとれ、このとき Y \textless{} x − q。逆に X
+\textless{} q かつ Y \textless{} x − q ならば X + Y \textless{}
+x。右辺は F の元 \{X \textless{} q\} ∩ \{Y \textless{} x − q\}
+の可算和なので F に属する。さらに \{X + Y ≤ x\} = ∩{\fallbackfont ₙ} \{X
++ Y \textless{} x + 1/n\} ∈ F となり、問題Ⅲ(1) の論法から X + Y
+は確率変数である。{\fallbackfont ℚ}
+が可算であることが本質で、実数全体で和をとると σ-加法族の外に出うる。
+
+問2　P(X = 0) = F(0) − F(0−) = 1/2 − 0 = 1/2。P(1/2 \textless{} X ≤ 2) =
+F(2) − F(1/2) = 3/4 − 1/2 = 1/4。F のジャンプは x = 0 の 1/2
+だけで、ジャンプの合計が 1 に満たないので離散分布ではない。また P(X = 0)
+\textgreater{} 0
+なので、どの1点にも確率0を与える密度関数型の分布でもない。実際この分布は「0
+に質量 1/2」と「{[}1, 3{]} 上の密度 1/4」の混合である。
+
+\hypertarget{ux554fux984cux2173}{%
+\subsubsection{問題Ⅳ}\label{ux554fux984cux2173}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+空欄 & 解答 & ポイント \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ア & P(A{\fallbackfont ₁}) & \\
+イ & 単調非減少 & 問1 \\
+ウ & 2{\fallbackfont ⁻ⁿ} & 切り下げ誤差は区間幅未満 \\
+エ & max(−X, 0) & \\
+オ & X{\fallbackfont ⁺} + X{\fallbackfont ⁻} & \\
+カ & 0 & ω \textgreater{} 0 なら 1/n \textless{} ω となる n 以降は 0 \\
+キ & 1 & n × (1/n) \\
+ク & +∞ & \\
+ケ & ① & \\
+\end{longtable}
+
+問1　場合分けする。X(ω) ≥ n + 1 なら X{\fallbackfont ₙ} = n \textless{}
+n + 1 = X{\fallbackfont ₙ₊₁}。n ≤ X(ω) \textless{} n + 1 なら
+X{\fallbackfont ₙ} = n であり、n は幅
+2{\fallbackfont ⁻⁽ⁿ⁺}¹{\fallbackfont ⁾} の格子点なので
+X{\fallbackfont ₙ₊₁} ≥ n。X(ω) \textless{} n なら X(ω) ∈
+{[}k/2{\fallbackfont ⁿ}, (k+1)/2{\fallbackfont ⁿ}) となる k
+があり、この区間は {[}2k/2{\fallbackfont ⁿ⁺}¹,
+(2k+1)/2{\fallbackfont ⁿ⁺}¹) と {[}(2k+1)/2{\fallbackfont ⁿ⁺}¹,
+(2k+2)/2{\fallbackfont ⁿ⁺}¹) に分かれる。どちらに入っても
+X{\fallbackfont ₙ₊₁} ≥ 2k/2{\fallbackfont ⁿ⁺}¹ = k/2{\fallbackfont ⁿ} =
+X{\fallbackfont ₙ}。
+
+問2　\{X ≥ a\} 上では a ≤ X、その外では 0 ≤ X なので、各点で a·1\{X ≥
+a\} ≤ X。期待値の単調性より a·P(X ≥ a) ≤ E{[}X{]}。両辺を a
+で割ればよい。
+
+\hypertarget{ux554fux984cux2174}{%
+\subsubsection{問題Ⅴ}\label{ux554fux984cux2174}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+空欄
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+解答
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ポイント
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+イ & P(A)P(B) & \\
+ロ & E{[}X{]}E{[}Y{]} & \\
+ハ & Cov(X, Y)（= E{[}XY{]} − E{[}X{]}E{[}Y{]}） & \\
+ニ & 2\^{}(−m) & 区間の長さ \\
+ホ & 1 & \\
+ヌ & ① & リースの定理 \\
+ヘ & σ²/n & 独立なので分散が足し算 \\
+ト & σ²/(nε²) & \\
+チ & 3n(n−1)σ{\fallbackfont ⁴} & 組 \{i, j\} が n(n−1)/2 通り、各組で
+4!/(2!2!) = 6 通り \\
+リ & 2 & (nK +
+3n²σ{\fallbackfont ⁴})/(n{\fallbackfont ⁴}ε{\fallbackfont ⁴}) ≤ (K +
+3σ{\fallbackfont ⁴})/(ε{\fallbackfont ⁴}n²) \\
+\end{longtable}
+
+問1　N = \{X{\fallbackfont ₙ} が X に収束しない\} とおくと P(N) = 0。ε
+\textgreater{} 0 を固定し A{\fallbackfont ₙ} =
+\{\textbar X{\fallbackfont ₙ} − X\textbar{} \textgreater{} ε\}
+とすると、limsup A{\fallbackfont ₙ}（無限回 ε 以上ずれる事象）は N
+に含まれる。∪（k ≥ n）A{\fallbackfont ₖ}
+は減少列なので、P(A{\fallbackfont ₙ}) ≤ P(∪（k ≥ n）A{\fallbackfont ₖ})
+→ P(limsup A{\fallbackfont ₙ}) ≤ P(N) = 0。
+
+問2　j = 0 の項だけを取り出した部分列 X（2\^{}m）= 1({[}0,
+2\^{}(−m){]})（m = 1, 2, \ldots）。ω \textgreater{} 0 なら 2\^{}(−m)
+\textless{} ω となる m 以降は 0 なので 0 に収束する。収束しないのは ω =
+0 だけで、その確率は 0。よって 0 に概収束する。
+
+\hypertarget{ux554fux984cux2175}{%
+\subsubsection{問題Ⅵ}\label{ux554fux984cux2175}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+空欄 & 解答 & ポイント \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+あ & P(B{\fallbackfont ᵢ}) & \\
+い & G-可測 & \\
+う & E{[}X·1(G){]} & \\
+え & 絶対連続 & \\
+お & 0 & 正の関数の積分が0 \\
+か & E{[}X{]} & \\
+き & Z·E{[}X \textbar{} G{]} & \\
+く & E{[}X{]}（定数） & \\
+け & E{[}X \textbar{} H{]} & \\
+こ & ① & \\
+\end{longtable}
+
+問1　偶数の目が出た場合の平均は (2 + 4 + 6)/3 = 4、奇数の場合は (1 + 3 +
+5)/3 = 3。よって E{[}X \textbar{} G{]} = 4·1(偶数) +
+3·1(奇数)。その期待値は 4 × 1/2 + 3 × 1/2 = 7/2 で、E{[}X{]} = 7/2
+に一致する。
+
+問2　W = E{[}X \textbar{} G{]} とおく。
+
+\[E[(X - Z)^2] = E[(X - W)^2] + 2E[(X - W)(W - Z)] + E[(W - Z)^2]\]
+
+W − Z は
+G-可測なので、塔の性質と「わかっている量は外に出せる」性質（二乗可積分の場合にも拡張できる）から
+E{[}(X − W)(W − Z){]} = E{[}(W − Z)(E{[}X \textbar{} G{]} − W){]} =
+0。よって E{[}(X − Z)²{]} = E{[}(X − W)²{]} + E{[}(W − Z)²{]} ≥ E{[}(X −
+W)²{]}。条件付き期待値は「G の情報だけで X
+を最もよく予測する量」であり、選択肢 ①（直交射影）の意味がここにある。
+
+\end{document}

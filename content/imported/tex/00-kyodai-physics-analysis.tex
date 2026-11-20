@@ -1,0 +1,526 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+  a4paper,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{Noto Serif CJK JP}
+  \setsansfont[]{Noto Sans CJK JP}
+  \setmonofont[]{Noto Sans Mono CJK JP}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=20mm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% XeLaTeX 用プリアンブル（pandoc の header-includes として読み込む）
+% 日本語専用パッケージ（xeCJK / luatexja）なしで組めるよう、
+% 本文フォントに和欧両対応の Noto Serif CJK JP を使い、
+% 和文の行分割は XeTeX 組み込みのロケール改行に任せる。
+\XeTeXlinebreaklocale "ja"
+\XeTeXlinebreakskip=0pt plus 0.5pt
+\XeTeXlinebreakpenalty=0
+\usepackage{amsmath,amssymb}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0.4\baselineskip}
+\renewcommand{\arraystretch}{1.25}
+\usepackage{etoolbox}
+\AtBeginEnvironment{longtable}{\small}
+
+% Noto Serif CJK JP に無い記号（上付き・下付きの添字文字、ℝ・ℕ、⟨ ⟩ など）用の補助フォント。
+% 該当箇所は latex/fallback-glyphs.lua が {\fallbackfont ...} で包む。
+\newfontfamily\fallbackfont{DejaVu Serif}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\hypertarget{ux4eacux90fdux5927ux5b66-ux7269ux7406-ux5165ux8a66ux904eux53bbux554fux5206ux6790}{%
+\section{京都大学 物理
+入試過去問分析}\label{ux4eacux90fdux5927ux5b66-ux7269ux7406-ux5165ux8a66ux904eux53bbux554fux5206ux6790}}
+
+作成日：2026-11-09
+
+\hypertarget{ux8a66ux9a13ux306eux57faux672cux60c5ux5831}{%
+\subsection{1.
+試験の基本情報}\label{ux8a66ux9a13ux306eux57faux672cux60c5ux5831}}
+
+京大物理は大問3題・素点100点満点で、理科2科目を180分（1科目受験は90分）で解く。素点は学部ごとの理科配点に換算される。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+項目
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+内容
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+大問数 & 3題（物理問題Ⅰ・Ⅱ・Ⅲ） \\
+素点 & 100点満点。大問ごとの配点は非公表だが、各30〜35点程度とされる \\
+試験時間 & 理科2科目で180分（2006年度までは150分）、1科目受験は90分 \\
+解答形式 & 空欄補充（式・数値）＋選択（\{
+\}から番号）＋「問」形式の記述・論述・描図 \\
+出題範囲 & 「物理基礎」「物理」 \\
+公式資料 & 大学が毎年「出題意図」（R8は解答例を含む）を公開 \\
+\end{longtable}
+
+\hypertarget{ux5b66ux90e8ux5225ux306eux7406ux79d1ux914dux70b9ux500bux5225ux5b66ux529bux691cux67fbux7406ux79d12ux79d1ux76eeux5408ux8a08}{%
+\subsubsection{学部別の理科配点（個別学力検査、理科2科目合計）}\label{ux5b66ux90e8ux5225ux306eux7406ux79d1ux914dux70b9ux500bux5225ux5b66ux529bux691cux67fbux7406ux79d12ux79d1ux76eeux5408ux8a08}}
+
+\begin{longtable}[]{@{}lllllll@{}}
+\toprule\noalign{}
+学部・学科 & 理科 & 数学 & 外国語 & 国語 & 個別計 & 理科の比重 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+理学部 & 300 & 300 & 225 & 150 & 975 & 31\% \\
+医学部医学科 & 300 & 250 & 300 & 150 & 1000（＋面接） & 30\% \\
+工学部（物理必須） & 250 & 250 & 200 & 100 & 800 & 31\% \\
+総合人間学部（理系） & 200 & 200 & 150 & 150 & 700 & 29\% \\
+医学部人間健康科学科 & 200 & 200 & 200 & 150 & 750 & 27\% \\
+薬学部 & 200 & 200 & 200 & 100 & 700 & 29\% \\
+農学部 & 200 & 200 & 200 & 100 & 700 & 29\% \\
+教育学部（理系、理科1科目） & 100 & 200 & 200 & 150 & 650 & 15\% \\
+\end{longtable}
+
+工学部は物理が必須（化学と2科目）。物理1科目あたりの換算は、理学部・医学部医学科で150点、工学部で125点、その他の2科目学部で100点に相当する。経済学部理系は個別試験で理科を課さない。配点は\href{https://www.kyoto-u.ac.jp/sites/default/files/inline-files/r7-ippan-haiten.20230720-fef9e3eeb820f21604ccbd19081ff0fe.pdf}{令和7年度
+配点等の予告（京都大学）}による。
+
+\hypertarget{ux5927ux554fux69cbux6210ux306eux5178ux578bux30d1ux30bfux30fcux30f3}{%
+\subsection{2.
+大問構成の典型パターン}\label{ux5927ux554fux69cbux6210ux306eux5178ux578bux30d1ux30bfux30fcux30f3}}
+
+記憶どおり、Ⅰ＝力学、Ⅱ＝電磁気、Ⅲ＝熱力学・波動・原子のいずれか、が定位置である。2019〜2026年度の8年間でこの型が崩れた年はない。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+大問
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+定位置の分野
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+2019〜2026の実績
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+補足
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Ⅰ & 力学 & 8/8年 & 2026年度は後半に磁場中の荷電物体の円運動を融合 \\
+Ⅱ & 電磁気 & 8/8年 &
+電磁誘導・荷電粒子・コンデンサーが中心。力学（回転・単振動）との融合が多い \\
+Ⅲ & 熱・波動・原子 & 熱4回、波動3回、原子1回 &
+熱と波動がほぼ交互。原子は大問としては数年に1度、小問で混ざることがある \\
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  第3問の内訳：熱力学（2020・2022・2025・2026）、波動（2019・2023・2024）、原子（2021）。
+\item
+  2025→2026は熱力学が2年連続で、交互パターンが崩れた。2027年度は波動・原子の可能性も含めて3分野とも準備が必要。
+\item
+  1つの大問の中で設定が（1）（2）（3）と段階的に変わり、後半で別分野が混ざる「融合型」が京大らしさの一つ。
+\end{itemize}
+
+\hypertarget{ux51faux984cux5f62ux5f0f}{%
+\subsection{3. 出題形式}\label{ux51faux984cux5f62ux5f0f}}
+
+誘導つきの長いリード文の空欄を順に埋め、各大問の終盤に「問」形式の記述・描図が1〜4題付く。この形式は長年ほぼ変わっていない。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+設問タイプ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+表記
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+1大問あたりの目安
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+答え方
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+採点上の性格
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+空欄補充 & ア・イ\ldots／イ・ロ\ldots／あ・い\ldots{} & 10〜15個 &
+式または数値のみ & 前から順に連鎖。前半は基本〜標準 \\
+選択 & \{ キ \} など & 1〜3個 & 選択肢の番号 &
+前の空欄が解けなくても正答できることが多い \\
+記述・論述 & 問1・問2\ldots{} & 1〜4題（全体で例年5〜6題、2026は8題） &
+導出過程や理由の説明 & 部分点狙いが可能。立式だけでも書く価値あり \\
+描図・グラフ & 「問」の中で指示 & 年0〜2題 &
+概形・軌道・サイクル図を描く &
+2025はなし、2026は軌道作図と変位の時間変化の作図あり \\
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  大問ごとに記号の系統が違う：Ⅰはカタカナ（ア〜）、Ⅱはイロハ（イ〜）、Ⅲはひらがな（あ〜）が通例。
+\item
+  「なお、□□はすでに□□で与えられたものと同じものを表す」という注記があり、空欄の答えを後の式で使う構造になっている。
+\item
+  高校範囲外の現象（光子気体、ドリフト運動、微分方程式的な扱いなど）は、必要な式を問題文で与え、それを使わせる誘導になる。
+\item
+  近似（微小量の1次近似、角度が微小など）を使う計算が毎年のように出る。
+\item
+  2022年度の分析では、時間変化率（ΔQ/Δt、ΔI/Δt）を考える設問が頻出とされている。
+\end{itemize}
+
+\hypertarget{ux5e74ux5ea6ux5225ux51faux984cux4e00ux89a720192026ux5e74ux5ea6}{%
+\subsection{4.
+年度別出題一覧（2019〜2026年度）}\label{ux5e74ux5ea6ux5225ux51faux984cux4e00ux89a720192026ux5e74ux5ea6}}
+
+8年分のテーマを並べると、Ⅰは2体・重心・円運動、Ⅱは電磁誘導と荷電粒子が繰り返し現れる。難易度はＺ会の分析ラベル（易〜難）による。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+年度
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ⅰ 力学
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ⅱ 電磁気
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ⅲ その他
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+全体の難易度・目標
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+2026（R8） &
+斜面台と小球（運動量・エネルギー保存）→磁場中の荷電小球の円運動→2球の衝突［易］
+&
+ターンテーブル上の導体：電流が磁場から受ける力、単振動、誘導起電力［やや易］
+&
+熱力学：ストッパー付き可動壁の容器、液中の圧力、熱サイクルと効率［やや難］
+& 前年比やや易化・分量やや増。5〜6割（医7割） \\
+2025（R7） &
+ばね付き小球の円運動、ひもで連結した2球の重心運動、棒で連結した2球の鉛直面内運動［標準］
+&
+伸縮する膜のソレノイド：自己インダクタンス、エネルギー収支、電流が作る圧力［やや難］
+&
+熱力学：断熱変化（ポアソンの式の導出）、非理想気体（光子気体）のサイクル［やや難］
+& 前年並み。6割程度 \\
+2024（R6） & ばね付き単振り子、2体問題 & 荷電粒子の運動、E×Bドリフト &
+波動：光ファイバー & --- \\
+2023（R5） & 万有引力と中心力、半径方向の微小振動 &
+球殻（球形）コンデンサー（原子分野の小問を含む） & 波動：電磁波と偏光板
+& --- \\
+2022（R4） & 2球の弾性衝突、円運動、放物運動［標準］ &
+無限はしご型回路の電磁誘導、発光ダイオード［標準］ &
+熱力学：断熱・等温サイクル、伸縮するヒモの熱サイクル［標準］ &
+前年並み。6割強 \\
+2021（R3） & 斜方投射、運動量保存則 & 電磁誘導（微分方程式的な誘導あり）
+& 原子：X線、物質波と電子線回折 & 2022と同程度 \\
+2020（R2） & 単振動 & コイルとコンデンサー & 熱力学：気体分子運動論 &
+難化年 \\
+2019（H31） & 万有引力（ケプラーの第3法則）、近似計算 &
+一様でない磁場中の電子の運動 & 波動：薄膜干渉を波の式で扱う & 難化年 \\
+\end{longtable}
+
+「---」はＺ会の難易度ラベルを確認できなかった年度。2019年度は問題Ⅲの設問文に不正確な記述があり、大学が訂正を公表した（採点上の措置なし）。
+
+\hypertarget{ux5206ux91ceux5225ux306eux983bux51faux9805ux76eeux30c1ux30a7ux30c3ux30afux30eaux30b9ux30c8}{%
+\subsection{5.
+分野別の頻出項目チェックリスト}\label{ux5206ux91ceux5225ux306eux983bux51faux9805ux76eeux30c1ux30a7ux30c3ux30afux30eaux30b9ux30c8}}
+
+最頻出は力学の「重心・2体・保存則」と電磁気の「電磁誘導・荷電粒子」。表の出題年は2019〜2026年度の大問で確認できたもの。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+分野
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+項目
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+出題年（確認分）
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+押さえるべき道具
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+力学 & 重心系・2体問題・相対運動 & 2022, 2024, 2025, 2026 &
+重心速度と相対速度へのエネルギー分解、反発係数 \\
+力学 & 運動量保存＋力学的エネルギー保存（動く台・衝突） & 2021, 2022,
+2026 & 2つの保存則の連立、相対速度ゼロの条件 \\
+力学 & 円運動（回転座標系・遠心力） & 2022, 2025 &
+つり合いの位置、等速円運動の条件 \\
+力学 & 単振動・微小振動 & 2020, 2023, 2024 & 復元力の近似、周期の導出 \\
+力学 & 万有引力・中心力・ケプラーの法則 & 2019, 2023 &
+面積速度一定、有効ポテンシャル的な見方 \\
+力学 & 剛体（力のモーメント・回転） & 2024, 2025, 2026 &
+モーメントのつり合い、回転と並進の分離 \\
+電磁気 & 電磁誘導（磁束変化・動く導体） & 2019, 2021, 2022, 2026 &
+ファラデーの法則、エネルギー収支 \\
+電磁気 & 荷電粒子の運動（サイクロトロン・ドリフト） & 2019, 2024, 2026 &
+ローレンツ力＝向心力、E×Bドリフト \\
+電磁気 & コイル・自己インダクタンス・磁場のエネルギー & 2020, 2025 &
+L、LI²/2、仕事とエネルギーの対応 \\
+電磁気 & コンデンサー（形状のある極板、球殻） & 2020, 2023 &
+電場・電位の積分的な扱い、静電エネルギー \\
+電磁気 & 回路（はしご型・ダイオード等の非線形素子） & 2022 &
+合成抵抗の自己相似、特性曲線の読み取り \\
+電磁気 & 電流が磁場から受ける力・電流間の力 & 2025, 2026 &
+平行電流の引力・斥力、力のモーメント \\
+熱力学 & 熱力学第一法則・断熱/等温変化・サイクル & 2022, 2025, 2026 &
+ポアソンの式、p--V図の仕事、熱効率 \\
+熱力学 & 気体分子運動論 & 2020 & 圧力の微視的導出 \\
+熱力学 & 理想気体以外の系（光子気体、伸縮するヒモ） & 2022, 2025 &
+与えられた状態方程式・内部エネルギー式で第一法則を使う \\
+熱力学 & 液体の圧力・浮力との組み合わせ & 2026 &
+深さによる圧力、大気圧の扱い \\
+波動 & 干渉（薄膜・偏光） & 2019, 2023 & 波の式と位相差、光路差 \\
+波動 & 屈折・全反射（光ファイバー） & 2024 & 臨界角、光路長 \\
+原子 & X線・物質波・電子線回折 & 2021 & ブラッグ条件、ド・ブロイ波長 \\
+\end{longtable}
+
+分野をまたぐ共通スキル：
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  微小量の1次近似（(1+x)\^{}n ≈ 1+nx、sinθ ≈ θ）を素早く使える
+\item[$\square$]
+  次元チェックと符号チェックで検算できる
+\item[$\square$]
+  問題文で与えられた範囲外の式をそのまま使って立式できる
+\item[$\square$]
+  「力×距離」グラフの面積やp--V図の面積から仕事を求められる
+\item[$\square$]
+  軌道・変位の時間変化・サイクル図の概形を描ける
+\end{itemize}
+
+\hypertarget{ux96e3ux6613ux5ea6ux8a2dux8a08ux3068ux5f97ux70b9ux76eeux5b89}{%
+\subsection{6.
+難易度設計と得点目安}\label{ux96e3ux6613ux5ea6ux8a2dux8a08ux3068ux5f97ux70b9ux76eeux5b89}}
+
+各大問は「基本→標準→やや難」と段階的に難しくなり、目標は全体で5〜6割（医学部医学科は7割前後）。時間に対して分量が多く、全問を解き切る前提では作られていない。
+
+\hypertarget{ux5927ux554fux5185ux306eux96e3ux6613ux5ea6ux306eux52feux914d}{%
+\subsubsection{大問内の難易度の勾配}\label{ux5927ux554fux5185ux306eux96e3ux6613ux5ea6ux306eux52feux914d}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+位置
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+典型的な内容
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+難度
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+戦略
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+(1) 前半の空欄 & 基本設定での運動方程式・保存則・公式の適用 & 基本〜標準
+& 完答必須。ここの取りこぼしが最も痛い \\
+(2) 中盤の空欄 & 設定変更（台が動く、形状が変わる等）＋近似計算 &
+標準〜やや難 & 誘導に沿って進む。詰まったら次の大問へ \\
+(3) 後半・最後の空欄 & 目新しい題材、範囲外の現象を式で与えて考察 &
+やや難〜難 & 選択肢や独立小問だけ拾う \\
+問（記述・描図） & 導出・理由説明・グラフ/軌道の作図 & やや難 &
+立式や概形だけでも書いて部分点 \\
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  目新しい題材ほど誘導が丁寧で、重要な情報が2度書かれたり、検算できるヒントが置かれたりする。
+\item
+  大問の途中で設定が変わると難度がリセットされ、また易しい設問から始まる。後半の(3)にも取れる空欄が残っていることが多い。
+\end{itemize}
+
+\hypertarget{ux5e74ux5ea6ux306bux3088ux308bux96e3ux6613ux5ea6ux306eux632fux308c}{%
+\subsubsection{年度による難易度の振れ}\label{ux5e74ux5ea6ux306bux3088ux308bux96e3ux6613ux5ea6ux306eux632fux308c}}
+
+\begin{itemize}
+\tightlist
+\item
+  難化年：2019・2020（Ｚ会が「難易度が高かった」と評価）。
+\item
+  落ち着いた年：2021・2022（標準）、2024・2025（同程度、6割目標）。
+\item
+  2026：やや易化だが分量やや増、記述・描図が8題と多め。
+\end{itemize}
+
+\hypertarget{ux76eeux6a19ux5f97ux70b9ux7d20ux70b9100ux70b9ux63dbux7b97}{%
+\subsubsection{目標得点（素点100点換算）}\label{ux76eeux6a19ux5f97ux70b9ux7d20ux70b9100ux70b9ux63dbux7b97}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+志望
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+目標
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+根拠
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+医学部医学科以外（足を引っ張らない） & 55〜60点 &
+各大問の前半を確実に取る水準 \\
+医学部医学科／物理で稼ぎたい他学部 & 70点 &
+Ｚ会は2026年度に医学科7割程度を目安と分析 \\
+医学部医学科で物理を得点源にする & 80点以上 &
+時間内に後半や「問」まで取る必要がある \\
+\end{longtable}
+
+時間配分は、2科目180分を物理・化学で約90分ずつが基本。開始3分で全大問を見渡し、得意分野から着手する受験生が多い。
+
+\hypertarget{ux5bfeux7b56ux306eux30ddux30a4ux30f3ux30c8ux3068ux51faux5178}{%
+\subsection{7.
+対策のポイントと出典}\label{ux5bfeux7b56ux306eux30ddux30a4ux30f3ux30c8ux3068ux51faux5178}}
+
+求められる力は「長文から誘導を読み取る力」「近似を含む計算を速く正確に行う力」「解く設問を見極める力」の3つに集約される。
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  基礎固め：標準問題集で各分野の典型（重心系、保存則の連立、電磁誘導のエネルギー収支、熱サイクル）をミスなく解けるようにする。
+\item
+  京大形式に慣れる：過去問を10年分以上、1大問30分前後で時間を計って解く。大学公表の「出題意図」で、各空欄が何を問うかを確認する。
+\item
+  初見題材の補強：冠模試（京大実戦・京大オープン）や他大学の過去問で、ドリフト運動・光子気体のような目新しい設定を潰しておく。
+\item
+  失点管理：次元・符号チェックを習慣化し、自分のミスの型をメモして直前に見直す。
+\end{enumerate}
+
+\hypertarget{ux51faux5178}{%
+\subsubsection{出典}\label{ux51faux5178}}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://www.kyoto-u.ac.jp/sites/default/files/inline-files/admissionsundergradpast_eqR08_eqdocumentsR08_4_M101-0d8d15ec0534bc363a9803616a9f7815.pdf}{令和8年度
+  物理 解答例等及び出題意図（京都大学）}
+\item
+  \href{https://www.kyoto-u.ac.jp/sites/default/files/inline-files/admissionsundergradpast_eqR07_eqdocumentsR07_4M101-48a28424405b7a93328b84b83d41604a.pdf}{令和7年度
+  物理 出題意図等（京都大学）}
+\item
+  \href{https://www.kyoto-u.ac.jp/ja/admissions/undergrad/past-eq}{一般選抜の試験問題等（京都大学）}
+\item
+  \href{https://www.kyoto-u.ac.jp/sites/default/files/inline-files/r7-ippan-haiten.20230720-fef9e3eeb820f21604ccbd19081ff0fe.pdf}{令和7年度
+  一般選抜 配点等の予告（京都大学）}
+\item
+  \href{https://www.zkai.co.jp/kyodai-exam/bunseki/butsuri/}{2026年度「京大物理」徹底分析（Ｚ会）}
+\item
+  \href{https://www.zkai.co.jp/kyodai-exam/bunseki/butsuri-2025/}{2025年度「京大物理」徹底分析（Ｚ会）}
+\item
+  \href{https://www.zkai.co.jp/kyodai-exam/bunseki/butsuri-2022/}{「京大物理」個別試験分析
+  2022年度（Ｚ会）}
+\item
+  \href{https://www.zkai.co.jp/kyodai-exam/bunseki/butsuri-2019/}{「京大物理」2019年度個別試験分析（Ｚ会）}
+\item
+  \href{https://buturi0117.com/kakomonichiran-1/}{旧帝大＋東京科学大
+  物理過去問解説一覧（予備校講師ともくん）}（2019〜2024年度の単元）
+\item
+  \href{https://note.com/epsilon_1031/n/n373320600e1c}{京大物理について徹底考察してみた（note）}（配点感・目標点・時間配分）
+\end{itemize}
+
+大問ごとの配点は大学が公表しておらず、「各30〜35点」は受験生・予備校側の推定である。
+
+\end{document}

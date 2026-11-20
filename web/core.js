@@ -1,5 +1,5 @@
 (function(root){
-  const normalize = value => String(value).normalize('NFKC').trim().toLowerCase().replace(/[\s　]/g,'').replace(/−/g,'-').replace(/θ/g,'theta').replace(/π/g,'pi').replace(/ℓ/g,'ell');
+  const normalize = value => String(value).normalize('NFKC').trim().toLowerCase().replace(/[\s　]/g,'').replace(/−/g,'-');
   function numeric(value) {
     const s=normalize(value);
     if (/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(s)) return Number(s);
@@ -14,16 +14,16 @@
     return 'compare';
   }
   function validateState(raw,bank){
-    if(!raw||typeof raw!=='object'||raw.version!==1||typeof raw.entries!=='object'||!raw.entries)throw new Error('Unsupported record');
+    if(!raw||raw.version!==2||raw.dataset!==bank.dataset||!raw.entries||typeof raw.entries!=='object'||Array.isArray(raw.entries))throw new Error('Different textbook or invalid record');
     const entries={};
     for(const p of bank.problems){
-      const r=raw.entries[p.id];if(!r||typeof r!=='object')continue;
-      const answers={},hints={},revealed={},rubric={};
-      for(const s of p.steps){answers[s.label]=typeof r.answers?.[s.label]==='string'?r.answers[s.label].slice(0,1000):'';hints[s.label]=r.hints?.[s.label]===true;revealed[s.label]=r.revealed?.[s.label]===true;}
-      for(let i=0;i<p.rubric.length;i++)rubric[i]=r.rubric?.[i]===true;
-      entries[p.id]={answers,hints,revealed,rubric,essay:typeof r.essay==='string'?r.essay.slice(0,20000):'',solution:r.solution===true,status:['mastered','review','assisted'].includes(r.status)?r.status:'',updated:typeof r.updated==='string'?r.updated.slice(0,30):''};
+      const r=Object.hasOwn(raw.entries,p.id)?raw.entries[p.id]:null;if(!r||typeof r!=='object')continue;
+      const answers={},revealed={},essays={};
+      for(const s of p.steps){answers[s.label]=typeof r.answers?.[s.label]==='string'?r.answers[s.label].slice(0,2000):'';revealed[s.label]=r.revealed?.[s.label]===true;}
+      for(const n of p.essays)essays[n]=typeof r.essays?.[n]==='string'?r.essays[n].slice(0,20000):'';
+      entries[p.id]={answers,revealed,essays,solution:r.solution===true,status:['mastered','review','assisted'].includes(r.status)?r.status:''};
     }
-    return {version:1,entries,mode:raw.mode==='exam'?'exam':'learn',last:bank.problems.some(p=>p.id===raw.last)?raw.last:''};
+    return {version:2,dataset:bank.dataset,entries,mode:raw.mode==='exam'?'exam':'learn',last:bank.problems.some(p=>p.id===raw.last)?raw.last:''};
   }
   const api={normalize,numeric,check,validateState};root.KeikoCore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);

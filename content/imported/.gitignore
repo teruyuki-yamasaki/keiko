@@ -1,0 +1,9 @@
+# LaTeX の中間ファイルと PDF（make pdf で再生成できる）
+build/
+pdf/
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.xdv
+*.synctex.gz

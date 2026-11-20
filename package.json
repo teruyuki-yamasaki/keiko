@@ -1,0 +1,11 @@
+{
+  "name": "keiko-foundations",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Guided university mathematics and physics practice",
+  "scripts": {
+    "start": "node scripts/server.mjs",
+    "build": "python3 scripts/build.py",
+    "test": "node tests/content.test.cjs"
+  }
+}

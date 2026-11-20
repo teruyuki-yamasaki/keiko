@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="誘導をたどり、自分の手で結論に届く。大学数学と物理の基礎を学ぶ17の短い演習。">
+  <title>稽古 / KEIKO — 数学と物理の基礎演習</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="vendor/katex/katex.min.css"><link rel="stylesheet" href="style.css">
+  <script defer src="vendor/katex/katex.min.js"></script><script defer src="vendor/katex/contrib/auto-render.min.js"></script>
+  <script defer src="data.js"></script><script defer src="core.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">本文へ</a>
+  <header class="topbar"><a href="#" class="brand" aria-label="稽古 ホーム"><span class="brand-mark">稽</span><span>稽古 <small>KEIKO</small></span></a><div class="top-actions"><span class="edition">基礎編 01</span><button id="menu-toggle" class="quiet mobile-only" aria-expanded="false" aria-controls="sidebar">目次</button><a class="quiet" href="pdf/questions.pdf" target="_blank" rel="noopener">問題PDF</a><a class="quiet" href="pdf/solutions.pdf" target="_blank" rel="noopener">解答PDF</a></div></header>
+  <div class="shell">
+    <aside id="sidebar"><div class="side-top"><span class="eyebrow">YOUR PRACTICE</span><h2>学びの地図</h2><div class="progress-line"><span id="progress-text">0 / 17 自力で解けた</span></div><progress id="progress" max="17" value="0" aria-label="自力で解けた大問数"></progress></div><nav id="course-nav" aria-label="演習の目次"></nav><div class="side-bottom"><button id="review-toggle" class="quiet">要復習だけ表示</button><button id="export" class="quiet">記録を書き出す</button><label class="quiet import-label">記録を読み込む<input id="import" type="file" accept="application/json,.json"></label><button id="reset" class="quiet muted">学習記録を消去</button><p>記録はこのブラウザに保存。<br>送信・ログインは不要です。</p></div></aside>
+    <main id="main" tabindex="-1"></main>
+  </div>
+  <div id="notice" role="status" aria-live="polite"></div>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title"><form method="dialog"><h2 id="confirm-title">学習記録の確認</h2><p id="confirm-message"></p><div class="dialog-actions"><button class="secondary" value="cancel" autofocus>キャンセル</button><button class="primary" value="confirm">実行する</button></div></form></dialog>
+  <footer>KEIKO · 誘導から、理解へ。<span>独自教材 / 京都大学の公式教材ではありません</span></footer>
+</body>
+</html>

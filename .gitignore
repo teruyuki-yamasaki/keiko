@@ -1,0 +1,5 @@
+build/
+reports/rendered/
+node_modules/
+__pycache__/
+*.pyc
